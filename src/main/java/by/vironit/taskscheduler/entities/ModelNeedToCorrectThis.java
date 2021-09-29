@@ -1,19 +1,19 @@
-package app.entities;
+package by.vironit.taskscheduler.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Model {
-    private static Model instanse = new Model();
+public class ModelNeedToCorrectThis {
+    private static ModelNeedToCorrectThis instanse = new ModelNeedToCorrectThis();
 
     private List<User> model;
 
-    private Model() {
+    private ModelNeedToCorrectThis() {
         model = new ArrayList<>();
     }
 
-    public static Model getInstance() {
+    public static ModelNeedToCorrectThis getInstance() {
         return instanse;
     }
 

@@ -1,11 +1,12 @@
-package app.DAO;
+package by.vironit.taskscheduler.dao;
 
-import app.entities.TaskGroups;
+import by.vironit.taskscheduler.entities.TaskGroups;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface TaskGroupsDAO {
+
     void create(TaskGroups taskGroups) throws SQLException;
 
     List<TaskGroups> getAll() throws SQLException;
@@ -15,4 +16,5 @@ public interface TaskGroupsDAO {
     void update(TaskGroups taskGroups) throws SQLException;
 
     void delete(TaskGroups taskGroups) throws SQLException;
+
 }

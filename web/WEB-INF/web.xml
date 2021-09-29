@@ -7,7 +7,7 @@
     <!-- add servlet -->
     <servlet>
         <servlet-name>add</servlet-name>
-        <servlet-class>app.servlets.AddServlet</servlet-class>
+        <servlet-class>by.vironit.taskscheduler.servlets.AddServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -18,7 +18,7 @@
     <!-- list servlet -->
     <servlet>
         <servlet-name>list</servlet-name>
-        <servlet-class>app.servlets.ListServlet</servlet-class>
+        <servlet-class>by.vironit.taskscheduler.servlets.ListServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

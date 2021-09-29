@@ -1,10 +1,11 @@
-package app.entities;
+package by.vironit.taskscheduler.entities;
 
 
 import java.sql.Date;
 import java.util.Objects;
 
 public class Task {
+
     private int taskGroupId;
     private int id;
     private String title;

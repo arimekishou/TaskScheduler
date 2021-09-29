@@ -1,4 +1,4 @@
-package app.entities;
+package by.vironit.taskscheduler.entities;
 
 import java.util.Objects;
 

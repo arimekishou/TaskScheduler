@@ -1,72 +1,76 @@
-package app.service;
+package by.vironit.taskscheduler.dao.impl;
 
-import app.DAO.UserDAO;
-import app.DAO.Util;
-import app.entities.User;
+import by.vironit.taskscheduler.dao.UserDAO;
+import by.vironit.taskscheduler.dao.Util;
+import by.vironit.taskscheduler.entities.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService extends Util implements UserDAO {
+public class UserDaoImpl extends Util implements UserDAO {
 
-    Connection connection = getConnection();
+    private final static String insert = "INSERT INTO public.user (name, password, email) VALUES (?, ?, ?)";
+    private final static String select = "SELECT name, password, email FROM public.user";
+    private final static String getById = "SELECT id, name, password, email FROM public.user WHERE id=?";
+    private final static String getByName = "SELECT id, name, password, email FROM public.user WHERE name=?";
+    private final static String update = "UPDATE public.user SET name=?, password=?, email=? WHERE id=DEFAULT";
+    private final static String delete = "DELETE FROM public.user WHERE id=? AND email=?";
 
     @Override
-    public void create(User user) throws SQLException {
+    public void create(User user) {
 
-        String sql = "INSERT INTO public.user (id, name, password, email) VALUES (DEFAULT, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
 
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getEmail());
 
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Create user ERROR");
-        } finally {
-            if (connection != null) connection.close();
+            System.out.println("Create user ERROR.");
         }
     }
 
     @Override
-    public List<User> getAll() throws SQLException {
+    public List<User> getAll() {
+
         List<User> userList = new ArrayList<>();
 
-        String sql = "SELECT name, password, email FROM public.user";
-
-        try (Statement statement = connection.createStatement()) {
-
-            ResultSet resultSet = statement.executeQuery(sql);
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(select)) {
 
             while (resultSet.next()) {
+
                 User user = new User();
                 user.setName(resultSet.getString("name"));
                 user.setPassword(resultSet.getString("password"));
                 user.setEmail(resultSet.getString("email"));
 
                 userList.add(user);
+
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Get all from user failed");
-        } finally {
-            if (connection != null) connection.close();
         }
         return userList;
     }
 
     @Override
-    public User getById(int id) throws SQLException {
+    public User getById(int id) {
+
         PreparedStatement preparedStatement = null;
-
-        String sql = "SELECT id, name, password, email FROM public.user WHERE id=?";
-
         User user = new User();
-        try {
-            preparedStatement = connection.prepareStatement(sql);
+
+        try (Connection connection = getConnection()) {
+
+            preparedStatement = connection.prepareStatement(getById);
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -77,27 +81,31 @@ public class UserService extends Util implements UserDAO {
             user.setEmail(resultSet.getString("email"));
 
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Get by id from user failed");
         } finally {
             if (preparedStatement != null) {
-                preparedStatement.close();
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-            if (connection != null) connection.close();
+            return user;
         }
-        return user;
     }
 
     @Override
-    public User getByName(String name) throws SQLException {
+    public User getByName(String name) {
+
         PreparedStatement preparedStatement = null;
-
-        String sql = "SELECT id, name, password, email FROM public.user WHERE name=?";
-
         User user = new User();
-        try {
-            preparedStatement = connection.prepareStatement(sql);
+
+        try (Connection connection = getConnection()) {
+
+            preparedStatement = connection.prepareStatement(getByName);
             preparedStatement.setString(1, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -108,49 +116,53 @@ public class UserService extends Util implements UserDAO {
             user.setEmail(resultSet.getString("email"));
 
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Get by name from user failed");
         } finally {
-            if (preparedStatement != null) preparedStatement.close();
-            if (connection != null) connection.close();
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return user;
     }
 
     @Override
-    public void update(User user) throws SQLException {
+    public void update(User user) {
 
-        String sql = "UPDATE public.user SET name=?, password=?, email=? WHERE id=DEFAULT";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(update)) {
 
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getName());
-            preparedStatement.setInt(4, user.getId());
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Update user failed");
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Override
-    public void delete(User user) throws SQLException {
+    public void delete(User user) {
 
-        String sql = "DELETE FROM public.user WHERE id=DEFAULT OR name=?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
 
             preparedStatement.setInt(1, user.getId());
-            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
 
             preparedStatement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Delete user failed");
-        } finally {
-            if (connection != null) connection.close();
         }
     }
+
 }

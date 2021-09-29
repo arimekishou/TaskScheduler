@@ -1,11 +1,12 @@
-package app.DAO;
+package by.vironit.taskscheduler.dao;
 
-import app.entities.User;
+import by.vironit.taskscheduler.entities.User;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDAO {
+
     void create(User user) throws SQLException;
 
     List<User> getAll() throws SQLException;
@@ -17,4 +18,5 @@ public interface UserDAO {
     void update(User user) throws SQLException;
 
     void delete(User user) throws SQLException;
+
 }
