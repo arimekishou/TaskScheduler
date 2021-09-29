@@ -1,3 +1,2 @@
 # TaskScheduler
-
-Task scheduler.
+Simple web task scheduler on java.
