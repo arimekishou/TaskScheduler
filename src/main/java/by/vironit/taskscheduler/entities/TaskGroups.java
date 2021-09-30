@@ -3,6 +3,7 @@ package by.vironit.taskscheduler.entities;
 import java.util.Objects;
 
 public class TaskGroups {
+
     private int id;
     private int userId;
     private String title;
