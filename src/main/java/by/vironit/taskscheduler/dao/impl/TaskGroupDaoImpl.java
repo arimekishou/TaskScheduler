@@ -10,21 +10,33 @@ import java.util.List;
 
 public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
 
-    private final static String insert = "INSERT INTO public.task_groups (title) VALUES (?)";
-    private final static String select = "SELECT id, user_id, title FROM public.task_groups";
-    private final static String getByIdAndUserId = "SELECT id, user_id FROM public.task_groups WHERE id=? AND user_id=?";
-    private final static String update = "UPDATE public.task_groups SET title=? WHERE id=? AND user_id=?";
-    private final static String delete = "DELETE FROM public.task_groups WHERE id=? OR user_id=?";
+    private final static String INSERT = "INSERT INTO public.task_groups (user_id, title) VALUES (?, ?)";
+    private final static String SELECT = "SELECT id, user_id, title FROM public.task_groups";
+    private final static String GET_BY_ID_AND_USER_ID = "SELECT id, user_id FROM public.task_groups WHERE id=? AND user_id=?";
+    private final static String UPDATE = "UPDATE public.task_groups SET title=? WHERE id=? AND user_id=?";
+    private final static String DELETE = "DELETE FROM public.task_groups WHERE id=? OR user_id=?";
 
     @Override
     public void create(TaskGroups taskGroups) {
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setString(1, taskGroups.getTitle());
+            int i = 0;
+
+            preparedStatement.setInt(++i, taskGroups.getUserId());
+            preparedStatement.setString(++i, taskGroups.getTitle());
 
             preparedStatement.executeUpdate();
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    taskGroups.setId(generatedKeys.getInt(1));
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,7 +52,7 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement()) {
 
-            ResultSet resultSet = statement.executeQuery(select);
+            ResultSet resultSet = statement.executeQuery(SELECT);
 
             while (resultSet.next()) {
                 TaskGroups taskGroups = new TaskGroups();
@@ -66,7 +78,7 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
 
         try (Connection connection = getConnection()) {
 
-            preparedStatement = connection.prepareStatement(getByIdAndUserId);
+            preparedStatement = connection.prepareStatement(GET_BY_ID_AND_USER_ID);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, user_id);
 
@@ -86,7 +98,7 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
     public void update(TaskGroups taskGroups) {
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(update)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
 
             preparedStatement.setString(1, taskGroups.getTitle());
 
@@ -100,7 +112,7 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
     public void delete(TaskGroups taskGroups) {
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
 
             preparedStatement.setInt(1, taskGroups.getId());
             preparedStatement.setInt(2, taskGroups.getUserId());

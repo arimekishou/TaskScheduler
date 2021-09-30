@@ -10,24 +10,34 @@ import java.util.List;
 
 public class UserDaoImpl extends Util implements UserDAO {
 
-    private final static String insert = "INSERT INTO public.user (name, password, email) VALUES (?, ?, ?)";
-    private final static String select = "SELECT name, password, email FROM public.user";
-    private final static String getById = "SELECT id, name, password, email FROM public.user WHERE id=?";
-    private final static String getByName = "SELECT id, name, password, email FROM public.user WHERE name=?";
-    private final static String update = "UPDATE public.user SET name=?, password=?, email=? WHERE id=DEFAULT";
-    private final static String delete = "DELETE FROM public.user WHERE id=? AND email=?";
+    private final static String INSERT = "INSERT INTO public.user (name, password, email) VALUES (?, ?, ?)";
+    private final static String SELECT = "SELECT name, password, email FROM public.user";
+    private final static String GET_BY_ID = "SELECT id, name, password, email FROM public.user WHERE id=?";
+    private final static String GET_BY_NAME = "SELECT id, name, password, email FROM public.user WHERE name=?";
+    private final static String UPDATE = "UPDATE public.user SET name=?, password=?, email=? WHERE id=?";
+    private final static String DELETE = "DELETE FROM public.user WHERE id=? OR email=?";
 
     @Override
     public void create(User user) {
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(insert)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getEmail());
+            int i = 0;
+
+            preparedStatement.setString(++i, user.getName());
+            preparedStatement.setString(++i, user.getPassword());
+            preparedStatement.setString(++i, user.getEmail());
 
             preparedStatement.executeUpdate();
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -42,7 +52,7 @@ public class UserDaoImpl extends Util implements UserDAO {
 
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(select)) {
+             ResultSet resultSet = statement.executeQuery(SELECT)) {
 
             while (resultSet.next()) {
 
@@ -70,8 +80,9 @@ public class UserDaoImpl extends Util implements UserDAO {
 
         try (Connection connection = getConnection()) {
 
-            preparedStatement = connection.prepareStatement(getById);
-            preparedStatement.setInt(1, id);
+            int i = 0;
+            preparedStatement = connection.prepareStatement(GET_BY_ID);
+            preparedStatement.setInt(++i, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -105,7 +116,7 @@ public class UserDaoImpl extends Util implements UserDAO {
 
         try (Connection connection = getConnection()) {
 
-            preparedStatement = connection.prepareStatement(getByName);
+            preparedStatement = connection.prepareStatement(GET_BY_NAME);
             preparedStatement.setString(1, name);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -136,11 +147,13 @@ public class UserDaoImpl extends Util implements UserDAO {
     public void update(User user) {
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(update)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
 
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getName());
+            int i = 0;
+            preparedStatement.setString(++i, user.getName());
+            preparedStatement.setString(++i, user.getPassword());
+            preparedStatement.setString(++i, user.getName());
+            preparedStatement.setInt(++i, user.getId());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,7 +165,7 @@ public class UserDaoImpl extends Util implements UserDAO {
     public void delete(User user) {
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
 
             preparedStatement.setInt(1, user.getId());
             preparedStatement.setString(2, user.getEmail());
