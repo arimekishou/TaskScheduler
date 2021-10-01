@@ -12,8 +12,8 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
 
     private final static String INSERT = "INSERT INTO public.task_groups (user_id, title) VALUES (?, ?)";
     private final static String SELECT = "SELECT id, user_id, title FROM public.task_groups";
-    private final static String GET_BY_ID_AND_USER_ID = "SELECT id, user_id FROM public.task_groups WHERE id=? AND user_id=?";
-    private final static String UPDATE = "UPDATE public.task_groups SET title=? WHERE id=? AND user_id=?";
+    private final static String GET_BY_ID_AND_USER_ID = "SELECT id, user_id, title FROM public.task_groups WHERE id=? OR user_id=?";
+    private final static String UPDATE = "UPDATE public.task_groups SET title=? WHERE id=? OR user_id=?";
     private final static String DELETE = "DELETE FROM public.task_groups WHERE id=? OR user_id=?";
 
     @Override
@@ -78,14 +78,19 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
 
         try (Connection connection = getConnection()) {
 
+            int i = 0;
+
             preparedStatement = connection.prepareStatement(GET_BY_ID_AND_USER_ID);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setInt(2, user_id);
+            preparedStatement.setInt(++i, id);
+            preparedStatement.setInt(++i, user_id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            taskGroups.setId(resultSet.getInt("id"));
-            taskGroups.setUserId(resultSet.getInt("user_id"));
+            while (resultSet.next()) {
+                taskGroups.setId(resultSet.getInt("id"));
+                taskGroups.setUserId(resultSet.getInt("user_id"));
+                taskGroups.setTitle(resultSet.getString("title"));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,7 +105,13 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
 
-            preparedStatement.setString(1, taskGroups.getTitle());
+            int i = 0;
+
+            preparedStatement.setString(++i, taskGroups.getTitle());
+            preparedStatement.setInt(++i, taskGroups.getId());
+            preparedStatement.setInt(++i, taskGroups.getUserId());
+
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,8 +125,10 @@ public class TaskGroupDaoImpl extends Util implements TaskGroupsDAO {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
 
-            preparedStatement.setInt(1, taskGroups.getId());
-            preparedStatement.setInt(2, taskGroups.getUserId());
+            int i = 0;
+
+            preparedStatement.setInt(++i, taskGroups.getId());
+            preparedStatement.setInt(++i, taskGroups.getUserId());
 
             preparedStatement.executeUpdate();
 
