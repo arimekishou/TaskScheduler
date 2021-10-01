@@ -11,7 +11,7 @@ import java.util.List;
 public class UserDaoImpl extends Util implements UserDAO {
 
     private final static String INSERT = "INSERT INTO public.user (name, password, email) VALUES (?, ?, ?)";
-    private final static String SELECT = "SELECT name, password, email FROM public.user";
+    private final static String SELECT = "SELECT id, name, password, email FROM public.user";
     private final static String GET_BY_ID = "SELECT id, name, password, email FROM public.user WHERE id=?";
     private final static String GET_BY_NAME = "SELECT id, name, password, email FROM public.user WHERE name=?";
     private final static String UPDATE = "UPDATE public.user SET name=?, password=?, email=? WHERE id=?";
@@ -57,6 +57,7 @@ public class UserDaoImpl extends Util implements UserDAO {
             while (resultSet.next()) {
 
                 User user = new User();
+                user.setId(resultSet.getInt("id"));
                 user.setName(resultSet.getString("name"));
                 user.setPassword(resultSet.getString("password"));
                 user.setEmail(resultSet.getString("email"));
