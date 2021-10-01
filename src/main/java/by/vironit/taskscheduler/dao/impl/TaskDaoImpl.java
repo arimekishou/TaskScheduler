@@ -17,8 +17,8 @@ public class TaskDaoImpl extends Util implements TaskDAO {
     private final static String UPDATE = "UPDATE public.tasks SET title=?, \"task_Description\"=?, \"start_Date\"=?, " +
             "\"end_Date\"=?, status=? WHERE id=? AND task_group_id=?";
     private final static String DELETE = "DELETE FROM public.tasks WHERE id=? OR task_group_id=?";
-    private final static String GET_BY_ID_AND_TASK_GROUP_ID = "SELECT id, task_group_id FROM public.tasks WHERE id=?" +
-            " AND task_group_id=?";
+    private final static String GET_BY_ID_AND_TASK_GROUP_ID = "SELECT id, task_group_id, task_group_id, id, title," +
+            " \"task_Description\", \"start_Date\", \"end_Date\", status FROM public.tasks WHERE id=? AND task_group_id=?";
 
     @Override
     public void create(Task task) {
@@ -66,9 +66,9 @@ public class TaskDaoImpl extends Util implements TaskDAO {
                 task.setTaskGroupId(resultSet.getInt("task_group_id"));
                 task.setId(resultSet.getInt("id"));
                 task.setTitle(resultSet.getString("title"));
-                task.setTaskDescription(resultSet.getString("taskDescription"));
-                task.setStartDate(resultSet.getDate("startDate"));
-                task.setEndDate(resultSet.getDate("endDate"));
+                task.setTaskDescription(resultSet.getString("task_Description"));
+                task.setStartDate(resultSet.getDate("start_Date"));
+                task.setEndDate(resultSet.getDate("end_Date"));
                 task.setStatus(resultSet.getString("status"));
 
                 tasksList.add(task);
@@ -88,14 +88,22 @@ public class TaskDaoImpl extends Util implements TaskDAO {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID_AND_TASK_GROUP_ID)) {
 
+            int i = 0;
 
-            preparedStatement.setInt(1, id);
-            preparedStatement.setInt(2, taskGroupId);
+            preparedStatement.setInt(++i, id);
+            preparedStatement.setInt(++i, taskGroupId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            task.setId(resultSet.getInt("id"));
-            task.setTaskGroupId(resultSet.getInt("task_group_id"));
+            while (resultSet.next()) {
+                task.setId(resultSet.getInt("id"));
+                task.setTaskGroupId(resultSet.getInt("task_group_id"));
+                task.setTitle(resultSet.getString("title"));
+                task.setTaskDescription(resultSet.getString("task_Description"));
+                task.setStartDate(resultSet.getDate("start_Date"));
+                task.setEndDate(resultSet.getDate("end_Date"));
+                task.setStatus(resultSet.getString("status"));
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,11 +118,15 @@ public class TaskDaoImpl extends Util implements TaskDAO {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
 
-            preparedStatement.setString(1, task.getTitle());
-            preparedStatement.setString(2, task.getTaskDescription());
-            preparedStatement.setDate(3, task.getStartDate());
-            preparedStatement.setDate(4, task.getEndDate());
-            preparedStatement.setString(5, task.getStatus());
+            int i = 0;
+
+            preparedStatement.setString(++i, task.getTitle());
+            preparedStatement.setString(++i, task.getTaskDescription());
+            preparedStatement.setDate(++i, task.getStartDate());
+            preparedStatement.setDate(++i, task.getEndDate());
+            preparedStatement.setString(++i, task.getStatus());
+
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -128,8 +140,12 @@ public class TaskDaoImpl extends Util implements TaskDAO {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
 
-            preparedStatement.setInt(1, task.getId());
-            preparedStatement.setInt(2, task.getTaskGroupId());
+            int i = 0;
+
+            preparedStatement.setInt(++i, task.getId());
+            preparedStatement.setInt(++i, task.getTaskGroupId());
+
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
