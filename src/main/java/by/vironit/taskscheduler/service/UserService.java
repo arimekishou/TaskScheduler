@@ -4,6 +4,7 @@ import by.vironit.taskscheduler.dao.UserDAO;
 import by.vironit.taskscheduler.dao.impl.UserDaoImpl;
 import by.vironit.taskscheduler.entities.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserService implements UserDAO {
@@ -25,14 +26,19 @@ public class UserService implements UserDAO {
     }
 
     @Override
+    public List<String> getAllEmails() throws SQLException {
+        return userDaoImpl.getAllEmails();
+    }
+
+    @Override
     public User getById(int id) {
         User user = userDaoImpl.getById(id);
         return user;
     }
 
     @Override
-    public User getByName(String name) {
-        User user = userDaoImpl.getByName(name);
+    public User getByEmail(String email) {
+        User user = userDaoImpl.getByEmail(email);
         return user;
     }
 
