@@ -10,7 +10,7 @@ public class Util {
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/task_scheduler";
     private static final String DB_LOGIN = "postgres";
     private static final String DB_PASSWORD = "20092021dba";
-
+    
     public Connection getConnection() {
 
         Connection connection = null;

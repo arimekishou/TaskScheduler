@@ -11,9 +11,11 @@ public interface UserDAO {
 
     List<User> getAll() throws SQLException;
 
+    List<String> getAllEmails() throws SQLException;
+
     User getById(int id) throws SQLException;
 
-    User getByName(String name) throws SQLException;
+    User getByEmail(String email) throws SQLException;
 
     void update(User user) throws SQLException;
 

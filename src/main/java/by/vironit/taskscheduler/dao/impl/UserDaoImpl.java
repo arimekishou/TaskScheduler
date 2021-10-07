@@ -10,10 +10,11 @@ import java.util.List;
 
 public class UserDaoImpl extends Util implements UserDAO {
 
+    private final static String GET_ALL_EMAIL = "SELECT email FROM public.user";
     private final static String INSERT = "INSERT INTO public.user (name, password, email) VALUES (?, ?, ?)";
     private final static String SELECT = "SELECT id, name, password, email FROM public.user";
     private final static String GET_BY_ID = "SELECT id, name, password, email FROM public.user WHERE id=?";
-    private final static String GET_BY_NAME = "SELECT id, name, password, email FROM public.user WHERE name=?";
+    private final static String GET_BY_EMAIL = "SELECT password FROM public.user WHERE email=?";
     private final static String UPDATE = "UPDATE public.user SET name=?, password=?, email=? WHERE id=?";
     private final static String DELETE = "DELETE FROM public.user WHERE id=? OR email=?";
 
@@ -74,6 +75,30 @@ public class UserDaoImpl extends Util implements UserDAO {
     }
 
     @Override
+    public List<String> getAllEmails() throws SQLException {
+
+        List<String> allEmails = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(GET_ALL_EMAIL)) {
+
+            while (resultSet.next()) {
+
+                User user = new User();
+                user.setEmail(resultSet.getString("email"));
+                allEmails.add(user.getEmail());
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Get all from user failed");
+        }
+        return allEmails;
+    }
+
+    @Override
     public User getById(int id) {
 
         PreparedStatement preparedStatement = null;
@@ -110,7 +135,7 @@ public class UserDaoImpl extends Util implements UserDAO {
     }
 
     @Override
-    public User getByName(String name) {
+    public User getByEmail(String email) {
 
         PreparedStatement preparedStatement = null;
         User user = new User();
@@ -119,21 +144,18 @@ public class UserDaoImpl extends Util implements UserDAO {
 
             int i = 0;
 
-            preparedStatement = connection.prepareStatement(GET_BY_NAME);
-            preparedStatement.setString(++i, name);
+            preparedStatement = connection.prepareStatement(GET_BY_EMAIL);
+            preparedStatement.setString(++i, email);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                user.setId(resultSet.getInt("id"));
-                user.setName(resultSet.getString("name"));
                 user.setPassword(resultSet.getString("password"));
-                user.setEmail(resultSet.getString("email"));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Get by name from user failed");
+            System.out.println("Get by email from user failed");
         } finally {
             if (preparedStatement != null) {
                 try {
