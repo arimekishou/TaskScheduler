@@ -32,13 +32,18 @@
                        class="w3-input w3-animate-input w3-border w3-round-large"
                        style="width: 30%"><br/>
             </label>
+            <label>Role:
+                <input type="role" name="role"
+                       class="w3-input w3-animate-input w3-border w3-round-large"
+                       style="width: 30%"><br/>
+            </label>
             <button type="submit" value="Submit" class="w3-btn w3-green w3-round-large w3-margin-bottom">Submit</button>
         </form>
     </div>
 </div>
 
 <div class="w3-container w3-grey w3-opacity w3-right-align w3-padding">
-    <button class="w3-btn w3-round-large" onclick="location.href='../..'">Back to main</button>
+    <button class="w3-btn w3-round-large" onclick="location.href='..'">Back to main</button>
 </div>
 </body>
 </html>

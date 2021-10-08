@@ -8,21 +8,24 @@ public class User {
     private String name;
     private String password;
     private String email;
+    private String role;
 
     public User() {
     }
 
-    public User(String name, String password, String email) {
+    public User(String name, String password, String email, String role) {
         this.name = name;
         this.password = password;
         this.email = email;
+        this.role = role;
     }
 
-    public User(int id, String name, String password, String email) {
+    public User(int id, String name, String password, String email, String role) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.email = email;
+        this.role = role;
     }
 
     public int getId() {
@@ -57,6 +60,14 @@ public class User {
         this.email = email;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -64,6 +75,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", role=" + role +
                 '}';
     }
 
@@ -72,11 +84,13 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && name.equals(user.name) && password.equals(user.password) && Objects.equals(email, user.email);
+        return id == user.id && name.equals(user.name) && password.equals(user.password) &&
+                email.equals(user.email) && role.equals(user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, password, email);
+        return Objects.hash(id, name, password, email, role);
     }
+
 }
