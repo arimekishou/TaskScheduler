@@ -43,12 +43,6 @@ public class UserService implements UserDAO {
     }
 
     @Override
-    public User getByRole(String role) throws SQLException {
-        User user = userDaoImpl.getByRole(role);
-        return user;
-    }
-
-    @Override
     public void update(User user) {
         userDaoImpl.update(user);
     }

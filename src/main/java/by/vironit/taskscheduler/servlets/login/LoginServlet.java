@@ -1,5 +1,6 @@
 package by.vironit.taskscheduler.servlets.login;
 
+import by.vironit.taskscheduler.entities.User;
 import by.vironit.taskscheduler.service.UserService;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/view/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -27,16 +28,11 @@ public class LoginServlet extends HttpServlet {
         UserService userService = new UserService();
 
         try {
-            if (userService.getAllEmails().contains(email) &&
-                    userService.getByEmail(email).getPassword().contains(password) &&
-                    userService.getByRole(email).getRole().contains("admin")) {
-                req.getRequestDispatcher("/view/adminPage.jsp").forward(req, resp);
-            } else if (userService.getAllEmails().contains(email) &&
-                    userService.getByEmail(email).getPassword().contains(password) &&
-                    userService.getByRole(email).getRole().contains("user")) {
-                req.getRequestDispatcher("/view/taskPage.jsp").forward(req, resp);
-
-            } else req.getRequestDispatcher("/view/loginError.jsp").forward(req, resp);
+            if (userService.getAllEmails().contains(email) && userService.getByEmail(email).getPassword().contains(password)) {
+                req.getRequestDispatcher("/WEB-INF/view/taskPage.jsp").forward(req, resp);
+            } else {
+                req.getRequestDispatcher("/WEB-INF/view/loginError.jsp").forward(req, resp);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

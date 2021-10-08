@@ -16,7 +16,7 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/view/registration.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/view/registration.jsp").forward(req, resp);
     }
 
     @Override
@@ -25,21 +25,18 @@ public class RegistrationServlet extends HttpServlet {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
-        String role = req.getParameter("role");
 
         UserService userService = new UserService();
 
         try {
             if (userService.getAllEmails().contains(email)) {
-                req.getRequestDispatcher("/view/registrationError.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/view/registrationError.jsp").forward(req, resp);
             } else {
                 User user = new User();
                 user.setName(name);
                 user.setPassword(password);
                 user.setEmail(email);
-                user.setRole(role);
                 userService.create(user);
-                req.getRequestDispatcher("/view/login.jsp").forward(req, resp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,10 +45,7 @@ public class RegistrationServlet extends HttpServlet {
         req.setAttribute("userName", name);
         req.setAttribute("password", password);
         req.setAttribute("email", email);
-        req.setAttribute("role", role);
         doGet(req, resp);
-
     }
-
 }
 
