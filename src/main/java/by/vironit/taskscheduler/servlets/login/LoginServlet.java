@@ -28,11 +28,11 @@ public class LoginServlet extends HttpServlet {
 
         try {
             if (userService.getAllEmails().contains(email) &&
-                    userService.getByEmail(email).getPassword().equals(password) &&
+                    userService.getByEmail(email).getPassword().contains(password) &&
                     userService.getByRole(email).getRole().equals("admin")) {
                 req.getRequestDispatcher("/view/adminPage.jsp").forward(req, resp);
-            } else if (userService.getAllEmails().equals(email) &&
-                    userService.getByEmail(email).getPassword().equals(password) &&
+            } else if (userService.getAllEmails().contains(email) &&
+                    userService.getByEmail(email).getPassword().contains(password) &&
                     userService.getByRole(email).getRole().equals("user")) {
                 req.getRequestDispatcher("/view/taskPage.jsp").forward(req, resp);
 

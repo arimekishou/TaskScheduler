@@ -30,10 +30,12 @@ public class UserDaoImpl extends Util implements UserDAO {
             preparedStatement.setString(++i, user.getName());
             preparedStatement.setString(++i, user.getPassword());
             preparedStatement.setString(++i, user.getEmail());
+
             if (user.getRole().equals("user") || user.getRole().equals("admin")) {
                 preparedStatement.setString(++i, user.getRole());
             } else throw new SQLException();
-                preparedStatement.executeUpdate();
+
+            preparedStatement.executeUpdate();
 
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
