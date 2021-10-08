@@ -13,8 +13,8 @@ public class Main {
         User user = new User();
         user.setName("boris");
         user.setPassword("boris");
-        user.setEmail("b123123123o23@mail.ru");
-        user.setRole("notone");
+        user.setEmail("bo23@mail.ru");
+        user.setRole("admin123");
 
         userService.create(user);
 
