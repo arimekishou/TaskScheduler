@@ -15,9 +15,17 @@
         <postgres.version>42.2.5</postgres.version>
         <servlet.version>4.0.1</servlet.version>
         <jsp.version>2.3.1</jsp.version>
+        <hibernate.version>5.5.7.Final</hibernate.version>
     </properties>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
