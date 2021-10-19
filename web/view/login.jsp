@@ -33,9 +33,7 @@
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small">
             <a href="/login" class="w3-bar-item w3-button"><i class="fas fa-user"></i>LOGIN</a>
-        </div>
-        <div class="w3-right w3-hide-small">
-            <a href="/index.html" class="w3-bar-item w3-button">ABOUT</a> <!-- Узнать как перенаправить -->
+            <a href = "/#about" class="w3-bar-item w3-button">ABOUT</a> <!-- Узнать как перенаправить -->
         </div>
         <!-- Hide right-floated links on small screens and replace them with a menu icon -->
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
@@ -57,7 +55,7 @@
             <p><input class="w3-input w3-border" type="email" placeholder="Email" required name="email"></p>
             <p><input class="w3-input w3-border" type="password" placeholder="Password" required name="password"></p>
             <p>
-                <button class="w3-button w3-black" type="submit" value="Submit" >
+                <button class="w3-button w3-black" type="submit" value="Submit">
                     LOGIN
                 </button>
             </p>
@@ -78,6 +76,7 @@
 </footer>
 
 <script>
+
     // Modal Image Gallery
     function onClick(element) {
         document.getElementById("img01").src = element.src;

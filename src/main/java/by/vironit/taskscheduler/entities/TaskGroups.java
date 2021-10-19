@@ -1,27 +1,38 @@
 package by.vironit.taskscheduler.entities;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Table(name = "task_groups")
+@Entity
 public class TaskGroups {
 
-    private int id;
-    private int userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(name = "title")
     private String title;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTitle() {
@@ -33,24 +44,25 @@ public class TaskGroups {
     }
 
     @Override
-    public String toString() {
-        return "Task_Groups{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", title='" + title + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof TaskGroups)) return false;
         TaskGroups that = (TaskGroups) o;
-        return id == that.id && userId == that.userId && Objects.equals(title, that.title);
+        return getId().equals(that.getId()) && getUser().equals(that.getUser()) && Objects.equals(getTitle(), that.getTitle());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, title);
+        return Objects.hash(getId(), getUser(), getTitle());
     }
+
+    @Override
+    public String toString() {
+        return "TaskGroups{" +
+                "id=" + id +
+                ", user=" + user +
+                ", title='" + title + '\'' +
+                '}';
+    }
+
 }

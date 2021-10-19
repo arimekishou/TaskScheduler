@@ -1,17 +1,30 @@
 package by.vironit.taskscheduler.entities;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Table(name = "\"user\"", indexes = {
+        @Index(name = "user_email_uindex", columnList = "email", unique = true)
+})
+@Entity
 public class User {
 
-    private int id;
-    private String name;
-    private String password;
-    private String email;
-    private String role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    public User() {
-    }
+    @Column(name = "name", nullable = false, length = 50)
+    private String name;
+
+    @Column(name = "password", nullable = false, length = 50)
+    private String password;
+
+    @Column(name = "email", nullable = false, length = 64)
+    private String email;
+
+    @Column(name = "role", nullable = false, length = 50)
+    private String role;
 
     public User(String name, String password, String email, String role) {
         this.name = name;
@@ -26,6 +39,9 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = role;
+    }
+
+    public User() {
     }
 
     public int getId() {
@@ -69,17 +85,6 @@ public class User {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -91,6 +96,17 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, password, email, role);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 
 }

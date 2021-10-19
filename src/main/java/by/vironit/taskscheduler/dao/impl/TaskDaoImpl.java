@@ -3,153 +3,50 @@ package by.vironit.taskscheduler.dao.impl;
 import by.vironit.taskscheduler.dao.TaskDAO;
 import by.vironit.taskscheduler.dao.Util;
 import by.vironit.taskscheduler.entities.Task;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TaskDaoImpl extends Util implements TaskDAO {
 
-    private final static String INSERT = "INSERT INTO public.tasks (task_group_id,  title, \"task_Description\", " +
-            "\"start_Date\", \"end_Date\", status) VALUES (?, ?, ?, ?, ?, ?)";
-    private final static String SELECT = "SELECT task_group_id, id, title, \"task_Description\", \"start_Date\"," +
-            "\"end_Date\", status FROM public.tasks";
-    private final static String UPDATE = "UPDATE public.tasks SET title=?, \"task_Description\"=?, \"start_Date\"=?, " +
-            "\"end_Date\"=?, status=? WHERE id=? AND task_group_id=?";
-    private final static String DELETE = "DELETE FROM public.tasks WHERE id=? OR task_group_id=?";
-    private final static String GET_BY_ID_AND_TASK_GROUP_ID = "SELECT id, task_group_id, task_group_id, id, title," +
-            " \"task_Description\", \"start_Date\", \"end_Date\", status FROM public.tasks WHERE id=? AND task_group_id=?";
-
     @Override
     public void create(Task task) {
-
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
-
-            int i = 0;
-
-            preparedStatement.setInt(++i, task.getTaskGroupId());
-            preparedStatement.setString(++i, task.getTitle());
-            preparedStatement.setString(++i, task.getTaskDescription());
-            preparedStatement.setDate(++i, task.getStartDate());
-            preparedStatement.setDate(++i, task.getEndDate());
-            preparedStatement.setString(++i, task.getStatus());
-
-            preparedStatement.executeUpdate();
-
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    task.setId(generatedKeys.getInt(1));
-                } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Create user ERROR.");
-        }
+        Session session = Util.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.save(task);
+        tx1.commit();
+        session.close();
     }
 
     @Override
     public List<Task> getAll() {
-
-        List<Task> tasksList = new ArrayList<>();
-
-        try (Connection connection = getConnection();
-             Statement statement = connection.createStatement()) {
-
-            ResultSet resultSet = statement.executeQuery(SELECT);
-
-            while (resultSet.next()) {
-                Task task = new Task();
-                task.setTaskGroupId(resultSet.getInt("task_group_id"));
-                task.setId(resultSet.getInt("id"));
-                task.setTitle(resultSet.getString("title"));
-                task.setTaskDescription(resultSet.getString("task_Description"));
-                task.setStartDate(resultSet.getDate("start_Date"));
-                task.setEndDate(resultSet.getDate("end_Date"));
-                task.setStatus(resultSet.getString("status"));
-
-                tasksList.add(task);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Get all from tasks failed");
-        }
-        return tasksList;
+        List<Task> taskList = (List<Task>) Util.getSessionFactory().openSession().createQuery("From Task").list();
+        return taskList;
     }
 
     @Override
-    public Task getByIdAndTaskGroupId(int id, int taskGroupId) {
-
-        Task task = new Task();
-
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID_AND_TASK_GROUP_ID)) {
-
-            int i = 0;
-
-            preparedStatement.setInt(++i, id);
-            preparedStatement.setInt(++i, taskGroupId);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                task.setId(resultSet.getInt("id"));
-                task.setTaskGroupId(resultSet.getInt("task_group_id"));
-                task.setTitle(resultSet.getString("title"));
-                task.setTaskDescription(resultSet.getString("task_Description"));
-                task.setStartDate(resultSet.getDate("start_Date"));
-                task.setEndDate(resultSet.getDate("end_Date"));
-                task.setStatus(resultSet.getString("status"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Failed get by id and task group id in task");
-        }
-        return task;
+    public Task getById(int id) {
+        return Util.getSessionFactory().openSession().get(Task.class, id);
     }
 
     @Override
     public void update(Task task) {
-
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE)) {
-
-            int i = 0;
-
-            preparedStatement.setString(++i, task.getTitle());
-            preparedStatement.setString(++i, task.getTaskDescription());
-            preparedStatement.setDate(++i, task.getStartDate());
-            preparedStatement.setDate(++i, task.getEndDate());
-            preparedStatement.setString(++i, task.getStatus());
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Update task failed");
-        }
+        Session session = Util.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.update(task);
+        tx1.commit();
+        session.close();
     }
 
     @Override
     public void delete(Task task) {
-
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE)) {
-
-            int i = 0;
-
-            preparedStatement.setInt(++i, task.getId());
-            preparedStatement.setInt(++i, task.getTaskGroupId());
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Session session = Util.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+        task = session.get(Task.class, task.getId());
+        session.delete(task);
+        tx1.commit();
+        session.close();
     }
 
 }

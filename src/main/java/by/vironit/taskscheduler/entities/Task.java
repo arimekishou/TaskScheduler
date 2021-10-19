@@ -1,57 +1,50 @@
 package by.vironit.taskscheduler.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "tasks")
+@Entity
 public class Task {
 
-    private int taskGroupId;
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "task_group_id", nullable = false)
+    private TaskGroups taskGroup;
+
+    @Column(name = "title", length = 100)
     private String title;
+
+    @Column(name = "TASK_DESCRIPTION", length = 1000)
     private String taskDescription;
+
+    @Column(name = "START_DATE")
     private Date startDate;
+
+    @Column(name = "END_DATE")
     private Date endDate;
+
+    @Column(name = "status", length = 15)
     private String status;
 
-    public int getTaskGroupId() {
-        return taskGroupId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTaskGroupId(int taskGroupId) {
-        this.taskGroupId = taskGroupId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTaskDescription() {
-        return taskDescription;
-    }
-
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getEndDate() {
@@ -62,39 +55,57 @@ public class Task {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
-        return status;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "taskGroupId=" + taskGroupId +
-                ", id=" + id +
-                ", title='" + title + '\'' +
-                ", taskDescription='" + taskDescription + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", status=" + status +
-                '}';
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public TaskGroups getTaskGroup() {
+        return taskGroup;
+    }
+
+    public void setTaskGroup(TaskGroups taskGroup) {
+        this.taskGroup = taskGroup;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return taskGroupId == task.taskGroupId && id == task.id && Objects.equals(title, task.title) &&
-                Objects.equals(taskDescription, task.taskDescription) && Objects.equals(startDate, task.startDate) &&
-                Objects.equals(endDate, task.endDate) && Objects.equals(status, task.status);
+        return getId().equals(task.getId()) && getTaskGroup().equals(task.getTaskGroup()) && Objects.equals(getTitle(), task.getTitle()) && Objects.equals(getTaskDescription(), task.getTaskDescription()) && Objects.equals(getStartDate(), task.getStartDate()) && Objects.equals(getEndDate(), task.getEndDate()) && Objects.equals(getStatus(), task.getStatus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskGroupId, id, title, taskDescription, startDate, endDate, status);
+        return Objects.hash(getId(), getTaskGroup(), getTitle(), getTaskDescription(), getStartDate(), getEndDate(), getStatus());
     }
+
 }

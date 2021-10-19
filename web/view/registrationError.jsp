@@ -34,9 +34,7 @@
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small">
             <a href="/login" class="w3-bar-item w3-button"><i class="fas fa-user"></i>LOGIN</a>
-        </div>
-        <div class="w3-right w3-hide-small">
-            <a href="/index.html" class="w3-bar-item w3-button">ABOUT</a> <!-- Узнать как перенаправить -->
+            <a href="/#about" class="w3-bar-item w3-button">ABOUT</a> <!-- Узнать как перенаправить -->
         </div>
         <!-- Hide right-floated links on small screens and replace them with a menu icon -->
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"

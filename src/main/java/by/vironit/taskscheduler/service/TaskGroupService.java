@@ -26,8 +26,8 @@ public class TaskGroupService implements TaskGroupsDAO {
     }
 
     @Override
-    public TaskGroups getByIdAndUserId(int id, int user_id) {
-        TaskGroups taskGroups = taskGroupImpl.getByIdAndUserId(id, user_id);
+    public TaskGroups getById(int id) {
+        TaskGroups taskGroups = taskGroupImpl.getById(id);
         return taskGroups;
     }
 

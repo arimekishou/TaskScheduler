@@ -2,7 +2,6 @@ package by.vironit.taskscheduler.dao;
 
 import by.vironit.taskscheduler.entities.User;
 
-import javax.management.relation.Role;
 import java.sql.SQLException;
 import java.util.List;
 

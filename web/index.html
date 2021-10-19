@@ -104,7 +104,8 @@
                 That's why we made this service for you and your time.<br>
                 We will help you prioritize your tasks, teach you how to save time and not waste it on useless
                 things.</p>
-            <p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> Create first task.</a></p> <!-- servlet taskpage переписать ссылку-->
+            <p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> Create first task.</a></p>
+            <!-- servlet taskpage переписать ссылку-->
         </div>
         <div class="w3-col m6">
             <img class="w3-image w3-round-large" src="/images/phone_buildings.jpg" alt="Buildings" width="700"
@@ -123,12 +124,20 @@
         <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: b.drozdov.vironit@vironit.ru</p>
         <br>
         <form method="post" action="/registration">
-            <p><input class="w3-input w3-border" type="text" placeholder="Name" required name="name"></p>
-            <p><input class="w3-input w3-border" type="password" placeholder="Password" required name="password"></p>
-            <p><input class="w3-input w3-border" type="email" placeholder="Email" required name="email"></p>
-            <p><input class="w3-input w3-border" type="role" placeholder="Role" required name="role"></p>
+            <p><label>
+                <input class="w3-input w3-border" type="text" placeholder="Name" required name="name">
+            </label></p>
+            <p><label>
+                <input class="w3-input w3-border" type="password" placeholder="Password" required name="password">
+            </label></p>
+            <p><label>
+                <input class="w3-input w3-border" type="email" placeholder="Email" required name="email">
+            </label></p>
+            <p><label>
+                <input class="w3-input w3-border" type="role" placeholder="Role" required name="role">
+            </label></p>
             <p>
-                <button class="w3-button w3-black" type="submit" value="Submit" onclick="location.href='/registration'">
+                <button class="w3-button w3-black" type="submit" value="Submit">
                     Registration
                 </button>
             </p>

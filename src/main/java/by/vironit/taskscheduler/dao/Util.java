@@ -1,30 +1,34 @@
 package by.vironit.taskscheduler.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import by.vironit.taskscheduler.entities.Task;
+import by.vironit.taskscheduler.entities.TaskGroups;
+import by.vironit.taskscheduler.entities.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 
 public class Util {
 
-    private static final String DB_DRIVER = "org.postgresql.Driver";
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/task_scheduler";
-    private static final String DB_LOGIN = "postgres";
-    private static final String DB_PASSWORD = "20092021dba";
-    
-    public Connection getConnection() {
+    private static SessionFactory sessionFactory;
 
-        Connection connection = null;
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                Configuration configuration = new Configuration().configure();
+                configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(TaskGroups.class);
+                configuration.addAnnotatedClass(Task.class);
+                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+                sessionFactory = configuration.buildSessionFactory(builder.build());
 
-        try {
-            Class.forName(DB_DRIVER);
-            connection = DriverManager.getConnection(DB_URL, DB_LOGIN, DB_PASSWORD);
-            System.out.println("Connected!");
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-            System.out.println("Connection failed");
+            } catch (Exception e) {
+                System.out.println("Исключение!" + e);
+            }
         }
-        return connection;
+        return sessionFactory;
     }
 
 }
+
+
+

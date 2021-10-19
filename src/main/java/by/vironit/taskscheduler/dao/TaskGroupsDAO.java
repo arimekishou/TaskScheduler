@@ -11,7 +11,7 @@ public interface TaskGroupsDAO {
 
     List<TaskGroups> getAll() throws SQLException;
 
-    TaskGroups getByIdAndUserId(int id, int user_id) throws SQLException;
+    TaskGroups getById(int id) throws SQLException;
 
     void update(TaskGroups taskGroups) throws SQLException;
 

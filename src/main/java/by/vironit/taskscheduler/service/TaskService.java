@@ -26,8 +26,8 @@ public class TaskService implements TaskDAO {
     }
 
     @Override
-    public Task getByIdAndTaskGroupId(int id, int taskGroupId) {
-        return taskDaoImpl.getByIdAndTaskGroupId(id, taskGroupId);
+    public Task getById(int id) {
+        return taskDaoImpl.getById(id);
     }
 
     @Override
@@ -39,4 +39,5 @@ public class TaskService implements TaskDAO {
     public void delete(Task task) {
         taskDaoImpl.delete(task);
     }
+
 }
