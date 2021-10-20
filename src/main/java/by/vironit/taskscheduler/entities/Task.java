@@ -27,13 +27,13 @@ public class Task {
     @Column(name = "title", length = 100)
     private String title;
 
-    @Column(name = "TASK_DESCRIPTION", length = 1000)
+    @Column(name = "task_description", length = 1000)
     private String taskDescription;
 
-    @Column(name = "START_DATE")
+    @Column(name = "start_date")
     private Date startDate;
 
-    @Column(name = "END_DATE")
+    @Column(name = "end_date")
     private Date endDate;
 
     @Column(name = "status", length = 15)

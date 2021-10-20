@@ -1,17 +1,23 @@
 package by.vironit.taskscheduler.main;
 
-import by.vironit.taskscheduler.service.UserService;
+import by.vironit.taskscheduler.entities.TaskGroups;
+import by.vironit.taskscheduler.entities.User;
+import by.vironit.taskscheduler.service.TaskGroupService;
 
 import java.sql.SQLException;
 
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        String email = "BorisDrozdov@mail.ru";
-        String password = "asd";
-        UserService userService = new UserService();
 
-        System.out.println(userService.getByRole(email).getRole().equals("admin"));
+        User user = new User();
+        user.setId(173);
+        TaskGroups taskGroups = new TaskGroups();
+        taskGroups.setUser(user);
+        taskGroups.setTitle("54654");
+        TaskGroupService taskGroupService = new TaskGroupService();
+        taskGroupService.create(taskGroups);
 
     }
+
 }
