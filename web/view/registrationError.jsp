@@ -46,7 +46,7 @@
 
 <!-- Registration Section -->
 <div class="w3-container w3-#fbfbfd" style="padding:128px 16px" id="registration">
-    <h3 class="w3-center w3-red">REGISTRATION ERROR</h3>
+    <h3 class="w3-center w3-text-red">REGISTRATION ERROR</h3>
     <p class="w3-center w3-large">This user already exist, try again or login:</p>
     <div style="margin-top:48px">
         <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Minsk, Belarus</p>

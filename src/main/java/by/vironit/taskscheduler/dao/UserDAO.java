@@ -19,6 +19,8 @@ public interface UserDAO {
 
     User getByRole(String role) throws SQLException;
 
+    User getByPassword(String password) throws SQLException;
+
     void update(User user) throws SQLException;
 
     void delete(User user) throws SQLException;

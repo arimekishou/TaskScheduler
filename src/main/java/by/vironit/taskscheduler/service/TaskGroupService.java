@@ -3,6 +3,7 @@ package by.vironit.taskscheduler.service;
 import by.vironit.taskscheduler.dao.TaskGroupsDAO;
 import by.vironit.taskscheduler.dao.impl.TaskGroupDaoImpl;
 import by.vironit.taskscheduler.entities.TaskGroups;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;

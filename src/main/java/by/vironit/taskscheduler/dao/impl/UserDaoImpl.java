@@ -55,6 +55,15 @@ public class UserDaoImpl extends Util implements UserDAO {
     }
 
     @Override
+    public User getByPassword(String password) {
+        Session session = Util.getSessionFactory().openSession();
+        User user = (User) session.createQuery("from User u where u.password = :password ").
+                setParameter("password", password).uniqueResult();
+        session.close();
+        return user;
+    }
+
+    @Override
     public void update(User user) {
         Session session = Util.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();

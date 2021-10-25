@@ -1,30 +1,51 @@
 package by.vironit.taskscheduler.servlets.login;
 
+import by.vironit.taskscheduler.entities.User;
 import by.vironit.taskscheduler.service.UserService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = "/login")
-public class LoginServlet extends HttpServlet {
+@Controller
+public class LoginServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/view/login.jsp").forward(req, resp);
+    private final UserService userService;
+
+    public LoginServlet(UserService userService) {
+        this.userService = userService;
     }
 
-    @Override
+    @ResponseBody
+    @RequestMapping(value = "/")
+    public ModelAndView home() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("home");
+        return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView loginPage() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("login");
+        return mav;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-
-        UserService userService = new UserService();
 
         try {
             if (userService.getAllEmails().contains(email) &&
@@ -40,8 +61,5 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        doGet(req, resp);
     }
 }
-
-
