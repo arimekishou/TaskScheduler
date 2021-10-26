@@ -8,7 +8,7 @@
       integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/favicon.png"/>
+<link rel="icon" href='<c:url value="/images/favicon.ico" />' type="image/x-icon">
 <style>
   body, h1, h2, h3, h4, h5, h6 {
     font-family: "Raleway", sans-serif
@@ -104,8 +104,7 @@
         That's why we made this service for you and your time.<br>
         We will help you prioritize your tasks, teach you how to save time and not waste it on useless
         things.</p>
-      <p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> Create first task.</a></p>
-      <!-- servlet taskpage переписать ссылку-->
+      <p><a href="#work" class="w3-button w3-black"><i class="fa fa-th" aria-hidden="true"></i> Create first task.</a></p>
     </div>
     <div class="w3-col m6">
       <img class="w3-image w3-round-large" src="/images/phone_buildings.jpg" alt="Buildings" width="700"

@@ -7,17 +7,17 @@
     <groupId>org.example</groupId>
     <artifactId>idea</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <url>http://maven.apache.org</url>
+    <url>https://maven.apache.org</url>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <postgres.version>42.2.5</postgres.version>
+        <postgres.version>42.2.24.jre7</postgres.version>
         <servlet.version>4.0.1</servlet.version>
-        <jsp.version>2.3.1</jsp.version>
-        <hibernate.version>5.5.7.Final</hibernate.version>
-        <lombok.version>1.16.18</lombok.version>
-        <spring.version>5.3.10</spring.version>
+        <jsp.version>2.3.3</jsp.version>
+        <hibernate.version>5.5.8.Final</hibernate.version>
+        <lombok.version>1.18.22</lombok.version>
+        <spring.version>5.3.11</spring.version>
     </properties>
 
     <dependencies>
@@ -86,14 +86,14 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>22.0.0</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
 

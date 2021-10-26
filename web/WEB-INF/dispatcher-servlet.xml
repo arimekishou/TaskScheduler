@@ -12,15 +12,16 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="by.vironit.taskscheduler.servlets.login"/>
+    <context:component-scan base-package="by.vironit.taskscheduler.controllers"/>
     <context:component-scan base-package="by.vironit.taskscheduler.service"/>
     <context:component-scan base-package="by.vironit.taskscheduler.entities"/>
     <context:component-scan base-package="by.vironit.taskscheduler.dao"/>
-    <context:component-scan base-package="by.vironit.taskscheduler.dao.impl"/>
+
+    <mvc:resources mapping="/images/**" location="/images" />
 
     <bean
             class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/view/"/>
+        <property name="prefix" value="view/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 
