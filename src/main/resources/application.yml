@@ -3,11 +3,12 @@ server:
     include-message: always
     include-binding-errors: always
 
+
 spring:
   datasource:
-    password:
+    password: 20092021dba
     url: jdbc:postgresql://localhost:5432/registration
-    username:
+    username: postgres
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -34,4 +35,3 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
-
