@@ -15,7 +15,6 @@ public class RegistrationController {
 
     @PostMapping
     public String register(RegistrationRequest request, HttpServletResponse response) throws IOException {
-
         registrationService.register(request);
         response.sendRedirect("/registrationConfirm");
         return null;
