@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <title>Task Scheduler</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -107,8 +107,8 @@
             <p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> Create first task.</a></p>
         </div>
         <div class="w3-col m6">
-            <img class="w3-image w3-round-large" src="/templates/images/phone_buildings.jpg" alt="Buildings" width="700"
-                 height="394">
+            <img class="w3-image w3-round-large" src="/templates/images/phone_buildings.jpg" alt="Buildings"
+                id="phone_buildings.jpg" width="700" height="394">
         </div>
     </div>
 </div>
@@ -137,12 +137,12 @@
             </label></p>
             <p>
                 <button class="w3-button w3-black" type="submit" value="Submit">
-                    Registration
+                   Registration
                 </button>
             </p>
         </form>
         <!-- Image of location/map -->
-        <img src="/templates/images/map.jpg" class="w3-image w3-greyscale" style="width:100%;margin-top:48px">
+        <img src="/templates/images/map.jpg" class="w3-image w3-greyscale" alt="map" style="width:100%;margin-top:48px">
     </div>
 </div>
 
@@ -160,7 +160,7 @@
 <script>
 
     // Toggle between showing and hiding the sidebar when clicking the menu icon
-    var mySidebar = document.getElementById("mySidebar");
+    let mySidebar = document.getElementById("mySidebar");
 
     function w3_open() {
         if (mySidebar.style.display === 'block') {

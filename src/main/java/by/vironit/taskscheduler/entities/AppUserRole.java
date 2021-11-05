@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.appuser;
+package by.vironit.taskscheduler.entities;
 
 public enum AppUserRole {
     USER,

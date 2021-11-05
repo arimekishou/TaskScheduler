@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.appuser;
+package by.vironit.taskscheduler.entities;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<!DOCTYPE html>
+<html>
 <title>Task Scheduler</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,12 +13,10 @@
     body, h1, h2, h3, h4, h5, h6 {
         font-family: "Raleway", sans-serif
     }
-
     body, html {
         height: 100%;
         line-height: 1.8;
     }
-
     .w3-bar .w3-button {
         padding: 16px;
     }
@@ -31,7 +30,7 @@
         <!-- Right-sided navbar links -->
         <div class="w3-right w3-hide-small">
             <a href="/login" class="w3-bar-item w3-button"><i class="fas fa-user"></i>LOGIN</a>
-            <a href="/#about" class="w3-bar-item w3-button">ABOUT</a>
+            <a href="/#about" class="w3-bar-item w3-button">ABOUT</a> <!-- Узнать как перенаправить -->
         </div>
         <!-- Hide right-floated links on small screens and replace them with a menu icon -->
         <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
@@ -41,32 +40,21 @@
     </div>
 </div>
 
-<!-- Login Section -->
+<!-- Registration Section -->
 <div class="w3-container w3-#fbfbfd" style="padding:128px 16px" id="login">
-    <h3 class="w3-center">LOGIN</h3>
-    <p class="w3-center w3-large">Welcome back.</p>
+    <h3 class="w3-center w3-text-red">LOGIN ERROR</h3>
+    <p class="w3-center w3-large">Incorrect email or password, try again:</p>
     <div style="margin-top:48px">
         <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> Minsk, Belarus</p>
         <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: b.drozdov.vironit@vironit.ru</p>
         <br>
-        <form th:action="@{/login}" method="post">
-            <div th:if="${param.error}" class="alert alert-danger w3-text-red"  role="alert">
-                Invalid username and password.
-            </div>
-            <div th:if="${param.logout}" class="alert alert-info w3-text-red" role="alert">
-                You have been logged out.
-            </div>
+        <form method="post" action="/login">
+            <p><input class="w3-input w3-border" type="email" placeholder="Email" id="email" required name="email"></p>
+            <p><input class="w3-input w3-border" type="password" placeholder="Password" id="password" required name="password"></p>
             <p>
-                <input for="username" class="w3-input w3-border" type="text" id="username" name="username"
-                       placeholder="Email" required autofocus>
-            </p>
-            <p>
-                <input for="password" type="password" id="password" name="password" class="w3-input w3-border"
-                       placeholder="Password" required>
-            </p>
-            <button class="w3-button w3-black" type="submit" value="Submit">
-                LOGIN
-            </button>
+                <button class="w3-button w3-black" type="submit" value="Submit" >
+                    LOGIN
+                </button>
             </p>
         </form>
     </div>
@@ -92,10 +80,8 @@
         var captionText = document.getElementById("caption");
         captionText.innerHTML = element.alt;
     }
-
     // Toggle between showing and hiding the sidebar when clicking the menu icon
     var mySidebar = document.getElementById("mySidebar");
-
     function w3_open() {
         if (mySidebar.style.display === 'block') {
             mySidebar.style.display = 'none';
@@ -103,7 +89,6 @@
             mySidebar.style.display = 'block';
         }
     }
-
     // Close the sidebar with the close button
     function w3_close() {
         mySidebar.style.display = "none";

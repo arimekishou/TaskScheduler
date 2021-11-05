@@ -1,5 +1,6 @@
-package by.vironit.taskscheduler.appuser;
+package by.vironit.taskscheduler.repository;
 
+import by.vironit.taskscheduler.entities.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

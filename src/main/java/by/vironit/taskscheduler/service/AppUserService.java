@@ -1,7 +1,9 @@
-package by.vironit.taskscheduler.appuser;
+package by.vironit.taskscheduler.service;
 
-import by.vironit.taskscheduler.registration.token.ConfirmationToken;
-import by.vironit.taskscheduler.registration.token.ConfirmationTokenService;
+import by.vironit.taskscheduler.controller.registration.token.ConfirmationToken;
+import by.vironit.taskscheduler.controller.registration.token.ConfirmationTokenService;
+import by.vironit.taskscheduler.entities.AppUser;
+import by.vironit.taskscheduler.repository.AppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

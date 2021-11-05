@@ -1,6 +1,6 @@
 package by.vironit.taskscheduler.security.config;
 
-import by.vironit.taskscheduler.appuser.AppUserService;
+import by.vironit.taskscheduler.service.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @AllArgsConstructor
@@ -32,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/user").setViewName("user");
         registry.addViewController("/registrationConfirm").setViewName("registrationConfirm");
+        registry.addViewController("/loginError").setViewName("loginError");
     }
 
     @Override
@@ -39,17 +37,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("index", "/", "/user","/registration/**", "/registrationConfirm")
+                .antMatchers("index", "/login", "/", "/user", "/registration/**", "/registrationConfirm")
                 .permitAll()
                 .anyRequest()
-                .authenticated().and()
+                .authenticated()
+                .and()
                 .formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
+                .defaultSuccessUrl("/user", true);
 
     }
 
@@ -60,8 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(appUserService);
         return provider;
@@ -74,4 +68,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         resolver.setSuffix(".html");
         return resolver;
     }
+
 }

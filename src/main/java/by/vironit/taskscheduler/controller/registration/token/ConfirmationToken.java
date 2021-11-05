@@ -1,6 +1,6 @@
-package by.vironit.taskscheduler.registration.token;
+package by.vironit.taskscheduler.controller.registration.token;
 
-import by.vironit.taskscheduler.appuser.AppUser;
+import by.vironit.taskscheduler.entities.AppUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

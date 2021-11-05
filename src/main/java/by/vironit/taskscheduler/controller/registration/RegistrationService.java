@@ -1,11 +1,11 @@
-package by.vironit.taskscheduler.registration;
+package by.vironit.taskscheduler.controller.registration;
 
-import by.vironit.taskscheduler.appuser.AppUser;
-import by.vironit.taskscheduler.appuser.AppUserRole;
-import by.vironit.taskscheduler.appuser.AppUserService;
+import by.vironit.taskscheduler.entities.AppUser;
+import by.vironit.taskscheduler.entities.AppUserRole;
+import by.vironit.taskscheduler.service.AppUserService;
 import by.vironit.taskscheduler.email.EmailSender;
-import by.vironit.taskscheduler.registration.token.ConfirmationToken;
-import by.vironit.taskscheduler.registration.token.ConfirmationTokenService;
+import by.vironit.taskscheduler.controller.registration.token.ConfirmationToken;
+import by.vironit.taskscheduler.controller.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

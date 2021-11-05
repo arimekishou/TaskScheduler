@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.registration;
+package by.vironit.taskscheduler.controller.registration;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
