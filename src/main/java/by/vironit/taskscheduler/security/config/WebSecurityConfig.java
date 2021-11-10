@@ -1,14 +1,18 @@
 package by.vironit.taskscheduler.security.config;
 
+import by.vironit.taskscheduler.security.jwt.JwtConfigurer;
+import by.vironit.taskscheduler.security.jwt.JwtTokenProvider;
 import by.vironit.taskscheduler.service.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,8 +23,16 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final AppUserService appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -35,16 +47,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .httpBasic().disable()
                 .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
+                .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers("index", "/login", "/", "/user", "/registration/**", "/registrationConfirm")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin()
+                /*.formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/user", true);
+                .defaultSuccessUrl("/user", true)
+                .and()*/
+                .apply(new JwtConfigurer(jwtTokenProvider));
 
     }
 

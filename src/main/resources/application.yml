@@ -3,6 +3,11 @@ server:
     include-message: always
     include-binding-errors: always
 
+security:
+  jwt:
+    token:
+      secret: secret
+      expired: 30000
 
 spring:
   datasource:
