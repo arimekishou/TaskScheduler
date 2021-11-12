@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,6 +25,22 @@ public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+
+    public List<AppUser> findAll() {
+        return appUserRepository.findAll();
+    }
+
+    public AppUser saveUser(AppUser user) {
+        return appUserRepository.save(user);
+    }
+
+    public void deleteById(Long id) {
+        appUserRepository.deleteById(id);
+    }
+
+    public AppUser findById(Long id) {
+        return appUserRepository.getOne(id);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email)

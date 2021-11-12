@@ -1,8 +1,9 @@
-package by.vironit.taskscheduler.security.jwt;
+package by.vironit.taskscheduler.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
 
 public class JwtAuthenticationException extends AuthenticationException {
+
     public JwtAuthenticationException(String msg, Throwable t) {
         super(msg, t);
     }
@@ -10,4 +11,5 @@ public class JwtAuthenticationException extends AuthenticationException {
     public JwtAuthenticationException(String msg) {
         super(msg);
     }
+
 }

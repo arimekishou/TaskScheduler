@@ -23,10 +23,10 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
+    private static final String LOGIN_ENDPOINT = "/auth/login";
     private final JwtTokenProvider jwtTokenProvider;
     private final AppUserService appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
 
     @Bean
     @Override
@@ -58,10 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .anyRequest()
                 .authenticated()
                 .and()
-                /*.formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/user", true)
-                .and()*/
                 .apply(new JwtConfigurer(jwtTokenProvider));
 
     }

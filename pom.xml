@@ -16,9 +16,16 @@
 	<properties>
 		<java.version>11</java.version>
 		<jsonwebtoken.version>0.9.1</jsonwebtoken.version>
+		<validation.version>2.0.1.Final</validation.version>
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${validation.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
