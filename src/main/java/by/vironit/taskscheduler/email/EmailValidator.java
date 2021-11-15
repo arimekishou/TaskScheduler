@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.controller.registration;
+package by.vironit.taskscheduler.email;
 
 import org.springframework.stereotype.Service;
 

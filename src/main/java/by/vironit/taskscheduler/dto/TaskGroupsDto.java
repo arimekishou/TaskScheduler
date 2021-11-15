@@ -4,18 +4,13 @@ import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.TaskGroups;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-
 @Data
 public class TaskGroupsDto {
 
-    @Null
     private Long id;
-    @Null
     private AppUser app_user_id;
-    @NotNull
     private String title;
+
 
     public static TaskGroupsDto fromTaskGroup(TaskGroups taskGroups) {
         TaskGroupsDto taskGroupsDto = new TaskGroupsDto();

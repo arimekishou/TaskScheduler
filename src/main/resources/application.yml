@@ -11,7 +11,7 @@ security:
 
 spring:
   datasource:
-    password: 20092021dba
+    password: 3004
     url: jdbc:postgresql://localhost:5432/task_scheduler_spring
     username: postgres
   jpa:
@@ -40,3 +40,7 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+
+  flyway:
+    check-location: false
+    locations:

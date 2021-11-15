@@ -13,16 +13,4 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Override
-    Optional<Task> findById(Long aLong);
-
-    @Override
-    <S extends Task> List<S> findAll(Example<S> example);
-
-    @Override
-    <S extends Task> S saveAndFlush(S entity);
-
-    @Override
-    void delete(Task entity);
-
 }

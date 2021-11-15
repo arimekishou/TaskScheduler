@@ -1,5 +1,6 @@
 package by.vironit.taskscheduler.controller.registration;
 
+import by.vironit.taskscheduler.email.EmailValidator;
 import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.AppUserRole;
 import by.vironit.taskscheduler.service.AppUserService;
@@ -36,7 +37,6 @@ public class RegistrationService {
                         request.getEmail(),
                         request.getPassword(),
                         AppUserRole.USER
-
                 )
         );
 

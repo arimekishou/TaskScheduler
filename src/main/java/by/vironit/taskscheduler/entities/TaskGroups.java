@@ -1,14 +1,18 @@
 package by.vironit.taskscheduler.entities;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
-@EqualsAndHashCode
-@NoArgsConstructor
 @ToString
+@NoArgsConstructor
 @Entity
 public class TaskGroups {
 
@@ -34,10 +38,21 @@ public class TaskGroups {
     )
     private AppUser appUser;
 
-    public TaskGroups(AppUser appUser, String title) {
-        this.appUser = appUser;
+    public TaskGroups(String title, AppUser appUser) {
         this.title = title;
-
+        this.appUser = appUser;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        TaskGroups that = (TaskGroups) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
