@@ -55,4 +55,5 @@ public class TaskGroups {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

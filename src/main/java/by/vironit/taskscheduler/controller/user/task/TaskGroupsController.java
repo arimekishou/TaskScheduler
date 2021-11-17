@@ -1,14 +1,17 @@
 package by.vironit.taskscheduler.controller.user.task;
 
 import by.vironit.taskscheduler.dto.TaskGroupsDto;
+import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.TaskGroups;
 import by.vironit.taskscheduler.repository.TaskGroupsRepository;
 import by.vironit.taskscheduler.service.TaskGroupsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,7 +28,8 @@ public class TaskGroupsController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<?> createGroup(@RequestBody TaskGroups taskGroups) {
+    public ResponseEntity<?> createGroup(@Valid @AuthenticationPrincipal AppUser appUser, String title) {
+        TaskGroups taskGroups = new TaskGroups(title, appUser);
         taskGroupsService.saveTaskGroup(taskGroups);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -53,15 +57,21 @@ public class TaskGroupsController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id, String title,
-                                    @RequestBody TaskGroups taskGroups) {
+    public ResponseEntity<?> update(@PathVariable(name = "id") Long id,
+                                    @Valid @AuthenticationPrincipal AppUser appUser, String title) {
+
         if (taskGroupsRepository.existsById(id)) {
+
+            TaskGroups taskGroups = new TaskGroups();
             taskGroups.setId(id);
             taskGroups.setTitle(title);
-            final TaskGroups update = taskGroupsRepository.save(taskGroups);
+            taskGroups.setAppUser(appUser);
+            taskGroupsService.saveTaskGroup(taskGroups);
+
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+
+        } else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+
     }
 
     @DeleteMapping(value = "/find/{id}")
