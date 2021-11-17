@@ -4,8 +4,7 @@ import by.vironit.taskscheduler.dto.AuthenticationRequestDto;
 import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.security.jwt.JwtTokenProvider;
 import by.vironit.taskscheduler.service.AppUserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,20 +21,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/auth/")
+@AllArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
-
     private final JwtTokenProvider jwtTokenProvider;
-
     private final AppUserService userService;
-
-    @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, AppUserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
-    }
 
     @PostMapping("login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {

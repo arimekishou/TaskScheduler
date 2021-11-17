@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -14,20 +13,20 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
-    public List<Task> allTask() {
+    public List<Task> findAll() {
         return taskRepository.findAll();
     }
 
-    public void save(Task task) {
-        taskRepository.saveAndFlush(task);
+    public void saveTask(Task task) {
+        taskRepository.save(task);
     }
 
-    public void delete(Task task) {
-        taskRepository.delete(task);
+    public void deleteById(Long id) {
+        taskRepository.deleteById(id);
     }
 
-    public Optional<Task> getById(Task task) {
-        return taskRepository.findById(task.getId());
+    public Task findById(Long id) {
+        return taskRepository.getOne(id);
     }
 
 }

@@ -5,7 +5,7 @@ import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.TaskGroups;
 import by.vironit.taskscheduler.repository.TaskGroupsRepository;
 import by.vironit.taskscheduler.service.TaskGroupsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,19 +16,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/taskGroups/")
+@AllArgsConstructor
 public class TaskGroupsController {
 
     private final TaskGroupsService taskGroupsService;
     private final TaskGroupsRepository taskGroupsRepository;
 
-    @Autowired
-    public TaskGroupsController(TaskGroupsService taskGroupsService, TaskGroupsRepository taskGroupsRepository) {
-        this.taskGroupsService = taskGroupsService;
-        this.taskGroupsRepository = taskGroupsRepository;
-    }
-
     @PostMapping(value = "/add")
     public ResponseEntity<?> createGroup(@Valid @AuthenticationPrincipal AppUser appUser, String title) {
+
         TaskGroups taskGroups = new TaskGroups(title, appUser);
         taskGroupsService.saveTaskGroup(taskGroups);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -36,6 +32,7 @@ public class TaskGroupsController {
 
     @GetMapping(value = "/find/all")
     public ResponseEntity<List<TaskGroups>> findAll() {
+
         final List<TaskGroups> taskGroups = taskGroupsService.findAll();
 
         return taskGroups != null && !taskGroups.isEmpty()
@@ -45,6 +42,7 @@ public class TaskGroupsController {
 
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<TaskGroupsDto> getGroupById(@PathVariable(name = "id") Long id) {
+
         TaskGroups taskGroups = taskGroupsService.findById(id);
 
         if (taskGroups == null) {
@@ -76,6 +74,7 @@ public class TaskGroupsController {
 
     @DeleteMapping(value = "/find/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
+
         if (taskGroupsRepository.existsById(id)) {
             taskGroupsService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);

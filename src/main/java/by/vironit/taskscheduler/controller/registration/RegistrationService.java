@@ -23,6 +23,7 @@ public class RegistrationService {
     private final EmailSender emailSender;
 
     public String register(RegistrationRequest request) {
+
         boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 
@@ -46,10 +47,12 @@ public class RegistrationService {
                 buildEmail(request.getFirstName(), link));
 
         return token;
+
     }
 
     @Transactional
     public String confirmToken(String token) {
+
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
@@ -69,9 +72,11 @@ public class RegistrationService {
         appUserService.enableAppUser(
                 confirmationToken.getAppUser().getEmail());
         return "confirmed";
+
     }
 
     private String buildEmail(String name, String link) {
+
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -140,4 +145,5 @@ public class RegistrationService {
                 "</div></div>";
 
     }
+
 }

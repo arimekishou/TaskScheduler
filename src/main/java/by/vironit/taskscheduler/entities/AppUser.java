@@ -3,6 +3,7 @@ package by.vironit.taskscheduler.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @Entity
 public class AppUser implements UserDetails {
 
@@ -30,13 +32,19 @@ public class AppUser implements UserDetails {
             generator = "user_sequence"
     )
     private Long id;
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Column
     private String email;
+    @Column
     private String password;
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
+    @Column
     private Boolean locked = false;
+    @Column
     private Boolean enabled = false;
 
     public AppUser(String firstName,
@@ -44,6 +52,7 @@ public class AppUser implements UserDetails {
                    String email,
                    String password,
                    AppUserRole appUserRole) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -53,8 +62,8 @@ public class AppUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(appUserRole.name());
+
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
         return Collections.singletonList(authority);
     }
 

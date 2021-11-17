@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+
         WebMvcConfigurer.super.addViewControllers(registry);
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/login").setViewName("login");
@@ -46,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -69,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
+
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(appUserService);
@@ -77,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
+
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("templates/");
         resolver.setSuffix(".html");

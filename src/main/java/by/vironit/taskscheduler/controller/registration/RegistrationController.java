@@ -15,6 +15,7 @@ public class RegistrationController {
 
     @PostMapping
     public String register(RegistrationRequest request, HttpServletResponse response) throws IOException {
+
         registrationService.register(request);
         response.sendRedirect("/registrationConfirm");
         return null;
@@ -23,9 +24,11 @@ public class RegistrationController {
 
     @GetMapping(path = "confirm")
     public String confirm(@RequestParam("token") String token, HttpServletResponse response) throws IOException {
+
         registrationService.confirmToken(token);
         response.sendRedirect("/login");
         return null;
+
     }
 
 }

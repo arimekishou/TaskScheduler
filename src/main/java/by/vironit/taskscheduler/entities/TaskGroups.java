@@ -39,12 +39,14 @@ public class TaskGroups {
     private AppUser appUser;
 
     public TaskGroups(String title, AppUser appUser) {
+
         this.title = title;
         this.appUser = appUser;
     }
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         TaskGroups that = (TaskGroups) o;

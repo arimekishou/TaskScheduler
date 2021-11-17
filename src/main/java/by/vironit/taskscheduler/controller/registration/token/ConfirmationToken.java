@@ -67,4 +67,5 @@ public class ConfirmationToken {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

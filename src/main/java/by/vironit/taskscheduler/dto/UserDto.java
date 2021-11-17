@@ -23,6 +23,7 @@ public class UserDto {
     private String email;
 
     public static UserDto fromUser(AppUser user) {
+
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());
@@ -33,6 +34,7 @@ public class UserDto {
     }
 
     public AppUser toUser() {
+
         AppUser user = new AppUser();
         user.setId(id);
         user.setFirstName(firstName);
@@ -41,4 +43,5 @@ public class UserDto {
 
         return user;
     }
+
 }

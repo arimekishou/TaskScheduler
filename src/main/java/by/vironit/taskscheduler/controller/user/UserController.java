@@ -24,6 +24,7 @@ public class UserController {
 
     @GetMapping(value = "{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Long id) {
+
         AppUser user = userService.findById(id);
 
         if (user == null) {
