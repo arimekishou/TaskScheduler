@@ -9,7 +9,6 @@ import by.vironit.taskscheduler.repository.TaskRepository;
 import by.vironit.taskscheduler.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +29,7 @@ public class TaskController {
 
     @PostMapping(value = "/add")
     public ResponseEntity<?> createTask(@Valid @AuthenticationPrincipal TaskGroups taskGroups, String title,
-                                        String description,TaskStatus taskStatus, LocalDateTime startDate,
+                                        String description, TaskStatus taskStatus, LocalDateTime startDate,
                                         LocalDateTime endDate) {
 
         Task task = new Task(taskGroups, title, description, startDate, endDate, taskStatus);
