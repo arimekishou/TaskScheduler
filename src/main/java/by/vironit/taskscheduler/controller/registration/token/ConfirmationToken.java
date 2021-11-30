@@ -1,7 +1,10 @@
 package by.vironit.taskscheduler.controller.registration.token;
 
 import by.vironit.taskscheduler.entities.AppUser;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;

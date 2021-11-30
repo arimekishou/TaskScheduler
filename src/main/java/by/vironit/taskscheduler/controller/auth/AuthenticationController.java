@@ -5,6 +5,8 @@ import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.security.jwt.JwtTokenProvider;
 import by.vironit.taskscheduler.service.AppUserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,6 +26,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthenticationController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final AppUserService userService;
@@ -46,6 +49,7 @@ public class AuthenticationController {
             response.put("email", email);
             response.put("token", token);
 
+            LOGGER.info("User is authenticated");
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");

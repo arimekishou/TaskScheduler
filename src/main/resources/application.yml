@@ -1,4 +1,11 @@
 server:
+  tomcat:
+    basedir: D:\
+    accesslog:
+      prefix: access
+      file-date-format: .yyyy-MM-dd
+      suffix: .log
+      enabled: true
   error:
     include-message: always
     include-binding-errors: always
@@ -44,3 +51,9 @@ spring:
   flyway:
     check-location: false
     locations:
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

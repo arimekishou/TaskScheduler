@@ -14,9 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @AllArgsConstructor
@@ -32,17 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-
-        WebMvcConfigurer.super.addViewControllers(registry);
-        registry.addViewController("/").setViewName("index");
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/user").setViewName("user");
-        registry.addViewController("/registrationConfirm").setViewName("registrationConfirm");
-        registry.addViewController("/loginError").setViewName("loginError");
     }
 
     @Override
@@ -76,15 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
         provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(appUserService);
         return provider;
-    }
-
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("templates/");
-        resolver.setSuffix(".html");
-        return resolver;
     }
 
 }

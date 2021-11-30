@@ -1,7 +1,6 @@
 package by.vironit.taskscheduler.controller.user.task;
 
 import by.vironit.taskscheduler.dto.TaskDto;
-import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.Task;
 import by.vironit.taskscheduler.entities.TaskGroups;
 import by.vironit.taskscheduler.entities.TaskStatus;
@@ -9,6 +8,9 @@ import by.vironit.taskscheduler.repository.TaskRepository;
 import by.vironit.taskscheduler.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,17 +26,21 @@ import java.util.List;
 @AllArgsConstructor
 public class TaskController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
     private final TaskService taskService;
     private final TaskRepository taskRepository;
 
     @PostMapping(value = "/add")
     public ResponseEntity<?> createTask(@Valid @AuthenticationPrincipal TaskGroups taskGroups, String title,
-                                        String description, TaskStatus taskStatus, LocalDateTime startDate,
-                                        LocalDateTime endDate) {
+                                        String description,
+                                        @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                LocalDateTime startDate,
+                                        @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                LocalDateTime endDate, TaskStatus taskStatus) {
 
         Task task = new Task(taskGroups, title, description, startDate, endDate, taskStatus);
         taskService.saveTask(task);
-        log.info("added");
+        LOGGER.info("Task created");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -63,8 +69,8 @@ public class TaskController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @Valid @AuthenticationPrincipal AppUser appUser,
-                                    String title, TaskGroups taskGroups, String taskDescription, LocalDateTime startDate,
+    public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @Valid @AuthenticationPrincipal
+            String title, TaskGroups taskGroups, String taskDescription, LocalDateTime startDate,
                                     LocalDateTime endDate, TaskStatus status) {
 
         if (taskRepository.existsById(id)) {
@@ -73,13 +79,12 @@ public class TaskController {
             task.setId(id);
             task.setTitle(title);
             task.setTaskGroup(taskGroups);
-            task.setTitle(title);
             task.setTaskDescription(taskDescription);
             task.setStartDate(startDate);
             task.setEndDate(endDate);
             task.setTaskStatus(status);
             taskService.saveTask(task);
-
+            LOGGER.info("Task updated");
             return new ResponseEntity<>(HttpStatus.OK);
 
         } else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
@@ -91,6 +96,7 @@ public class TaskController {
 
         if (taskRepository.existsById(id)) {
             taskService.deleteById(id);
+            LOGGER.info("Task deleted");
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
