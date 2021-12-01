@@ -1,5 +1,6 @@
 package by.vironit.taskscheduler.entities;
 
+import by.vironit.taskscheduler.entities.enums.TaskStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,8 +30,9 @@ public class Task {
     )
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "task_groups_id", nullable = false)
+    @ToString.Exclude
     private TaskGroups taskGroup;
     @Column
     private String title;

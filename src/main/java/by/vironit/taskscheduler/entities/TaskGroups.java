@@ -31,7 +31,7 @@ public class TaskGroups {
     @Column(nullable = false)
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             nullable = false,
             name = "app_user_id"

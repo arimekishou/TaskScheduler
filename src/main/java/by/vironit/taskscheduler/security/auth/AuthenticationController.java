@@ -1,9 +1,8 @@
-package by.vironit.taskscheduler.controller.auth;
+package by.vironit.taskscheduler.security.auth;
 
-import by.vironit.taskscheduler.dto.AuthenticationRequestDto;
 import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.security.jwt.JwtTokenProvider;
-import by.vironit.taskscheduler.service.AppUserService;
+import by.vironit.taskscheduler.service.impl.AppUserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,7 @@ public class AuthenticationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationController.class);
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final AppUserService userService;
+    private final AppUserServiceImpl userService;
 
     @PostMapping("login")
     public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {

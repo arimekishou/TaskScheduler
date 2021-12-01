@@ -2,7 +2,7 @@ package by.vironit.taskscheduler.dto;
 
 import by.vironit.taskscheduler.entities.Task;
 import by.vironit.taskscheduler.entities.TaskGroups;
-import by.vironit.taskscheduler.entities.TaskStatus;
+import by.vironit.taskscheduler.entities.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

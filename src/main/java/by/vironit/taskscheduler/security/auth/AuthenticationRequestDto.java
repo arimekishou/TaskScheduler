@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.dto;
+package by.vironit.taskscheduler.security.auth;
 
 import lombok.Data;
 

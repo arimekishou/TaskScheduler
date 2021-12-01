@@ -14,7 +14,7 @@ security:
   jwt:
     token:
       secret: secret
-      expired: 30000
+      expired: 3000000
 
 spring:
   datasource:

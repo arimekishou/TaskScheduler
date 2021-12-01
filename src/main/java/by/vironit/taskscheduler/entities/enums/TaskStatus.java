@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.entities;
+package by.vironit.taskscheduler.entities.enums;
 
 public enum TaskStatus {
 
@@ -6,6 +6,6 @@ public enum TaskStatus {
     IN_PROCESS,
     CANCELED,
     CLOSED,
-    DECLINED,
+    DECLINED
 
 }

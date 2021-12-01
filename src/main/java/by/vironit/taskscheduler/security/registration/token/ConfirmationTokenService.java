@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.controller.registration.token;
+package by.vironit.taskscheduler.security.registration.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

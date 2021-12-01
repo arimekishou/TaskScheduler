@@ -1,34 +1,26 @@
 package by.vironit.taskscheduler.service;
 
+import by.vironit.taskscheduler.dto.TaskGroupsDto;
+import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.TaskGroups;
-import by.vironit.taskscheduler.repository.TaskGroupsRepository;
-import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
-import org.springframework.stereotype.Service;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
-@Log
-@Service
-@AllArgsConstructor
-public class TaskGroupsService {
+public interface TaskGroupsService {
 
-    private final TaskGroupsRepository taskGroupsRepository;
+    TaskGroupsDto saveTaskGroup(TaskGroupsDto taskGroupsDto);
 
-    public List<TaskGroups> findAll() {
-        return taskGroupsRepository.findAll();
-    }
+    TaskGroupsDto getById(Long id);
 
-    public void saveTaskGroup(TaskGroups taskGroups) {
-        taskGroupsRepository.save(taskGroups);
-    }
+    TaskGroupsDto findByTitle(String title);
 
-    public void deleteById(Long id) {
-        taskGroupsRepository.deleteById(id);
-    }
+    CollectionModel<TaskGroupsDto> findAll(Integer page, Integer size, String sort);
 
-    public TaskGroups findById(Long id) {
-        return taskGroupsRepository.getOne(id);
-    }
+    List<TaskGroups> getAllByAppUser(AppUser appUser);
+
+    void deleteById(Long id);
+
+    void updateTaskGroup(TaskGroupsDto taskGroupsDto);
 
 }

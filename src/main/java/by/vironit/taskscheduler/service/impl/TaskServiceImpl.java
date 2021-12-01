@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.service;
+package by.vironit.taskscheduler.service.impl;
 
 import by.vironit.taskscheduler.entities.Task;
 import by.vironit.taskscheduler.repository.TaskRepository;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class TaskService {
+public class TaskServiceImpl {
 
     private final TaskRepository taskRepository;
 

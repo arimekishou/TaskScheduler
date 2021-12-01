@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.controller.registration.token;
+package by.vironit.taskscheduler.security.registration.token;
 
 import by.vironit.taskscheduler.entities.AppUser;
 import lombok.Getter;
@@ -41,11 +41,12 @@ public class ConfirmationToken {
 
     private LocalDateTime confirmedAt;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             nullable = false,
             name = "app_user_id"
     )
+    @ToString.Exclude
     private AppUser appUser;
 
     public ConfirmationToken(String token,

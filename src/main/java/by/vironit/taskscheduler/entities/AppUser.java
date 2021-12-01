@@ -1,5 +1,6 @@
 package by.vironit.taskscheduler.entities;
 
+import by.vironit.taskscheduler.entities.enums.AppUserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

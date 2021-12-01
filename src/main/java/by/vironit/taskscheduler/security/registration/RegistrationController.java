@@ -1,4 +1,4 @@
-package by.vironit.taskscheduler.controller.registration;
+package by.vironit.taskscheduler.security.registration;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

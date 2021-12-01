@@ -1,11 +1,12 @@
-package by.vironit.taskscheduler.controller.user.task;
+package by.vironit.taskscheduler.controller;
 
 import by.vironit.taskscheduler.dto.TaskDto;
+import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.Task;
 import by.vironit.taskscheduler.entities.TaskGroups;
-import by.vironit.taskscheduler.entities.TaskStatus;
+import by.vironit.taskscheduler.entities.enums.TaskStatus;
 import by.vironit.taskscheduler.repository.TaskRepository;
-import by.vironit.taskscheduler.service.TaskService;
+import by.vironit.taskscheduler.service.impl.TaskServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
@@ -27,27 +28,29 @@ import java.util.List;
 public class TaskController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
-    private final TaskService taskService;
+    private final TaskServiceImpl taskServiceImpl;
     private final TaskRepository taskRepository;
 
     @PostMapping(value = "/add")
-    public ResponseEntity<?> createTask(@Valid @AuthenticationPrincipal TaskGroups taskGroups, String title,
-                                        String description,
+    public ResponseEntity<?> createTask(@Valid @AuthenticationPrincipal AppUser appUser,
+                                        @RequestParam String title,
+                                        @RequestParam String description,
+                                        @RequestParam Long taskGroupsId,
                                         @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 LocalDateTime startDate,
                                         @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 LocalDateTime endDate, TaskStatus taskStatus) {
 
-        Task task = new Task(taskGroups, title, description, startDate, endDate, taskStatus);
+        /*Task task = new Task(taskGroups, title, description, startDate, endDate, taskStatus);
         taskService.saveTask(task);
-        LOGGER.info("Task created");
+        LOGGER.info("Task created");*/
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/find/all")
     public ResponseEntity<List<Task>> findAll() {
 
-        final List<Task> task = taskService.findAll();
+        final List<Task> task = taskServiceImpl.findAll();
 
         return task != null && !task.isEmpty()
                 ? new ResponseEntity<>(task, HttpStatus.OK)
@@ -57,7 +60,7 @@ public class TaskController {
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<TaskDto> getTaskById(@PathVariable(name = "id") Long id) {
 
-        Task task = taskService.findById(id);
+        Task task = taskServiceImpl.findById(id);
 
         if (task == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -83,7 +86,7 @@ public class TaskController {
             task.setStartDate(startDate);
             task.setEndDate(endDate);
             task.setTaskStatus(status);
-            taskService.saveTask(task);
+            taskServiceImpl.saveTask(task);
             LOGGER.info("Task updated");
             return new ResponseEntity<>(HttpStatus.OK);
 
@@ -95,7 +98,7 @@ public class TaskController {
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
 
         if (taskRepository.existsById(id)) {
-            taskService.deleteById(id);
+            taskServiceImpl.deleteById(id);
             LOGGER.info("Task deleted");
             return new ResponseEntity<>(HttpStatus.OK);
         }

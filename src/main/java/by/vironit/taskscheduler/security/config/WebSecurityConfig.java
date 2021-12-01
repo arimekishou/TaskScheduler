@@ -2,7 +2,7 @@ package by.vironit.taskscheduler.security.config;
 
 import by.vironit.taskscheduler.security.jwt.JwtConfigurer;
 import by.vironit.taskscheduler.security.jwt.JwtTokenProvider;
-import by.vironit.taskscheduler.service.AppUserService;
+import by.vironit.taskscheduler.service.impl.AppUserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     private static final String LOGIN_ENDPOINT = "/auth/login";
     private final JwtTokenProvider jwtTokenProvider;
-    private final AppUserService appUserService;
+    private final AppUserServiceImpl appUserServiceImpl;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Bean
@@ -61,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(appUserService);
+        provider.setUserDetailsService(appUserServiceImpl);
         return provider;
     }
 

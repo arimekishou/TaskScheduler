@@ -1,12 +1,12 @@
-package by.vironit.taskscheduler.controller.registration;
+package by.vironit.taskscheduler.security.registration;
 
-import by.vironit.taskscheduler.controller.registration.token.ConfirmationToken;
-import by.vironit.taskscheduler.controller.registration.token.ConfirmationTokenService;
+import by.vironit.taskscheduler.security.registration.token.ConfirmationToken;
+import by.vironit.taskscheduler.security.registration.token.ConfirmationTokenService;
 import by.vironit.taskscheduler.email.EmailSender;
 import by.vironit.taskscheduler.email.EmailValidator;
 import by.vironit.taskscheduler.entities.AppUser;
-import by.vironit.taskscheduler.entities.AppUserRole;
-import by.vironit.taskscheduler.service.AppUserService;
+import by.vironit.taskscheduler.entities.enums.AppUserRole;
+import by.vironit.taskscheduler.service.impl.AppUserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrationService {
 
-    private final AppUserService appUserService;
+    private final AppUserServiceImpl appUserServiceImpl;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
@@ -31,7 +31,7 @@ public class RegistrationService {
             throw new IllegalStateException("email not valid");
         }
 
-        String token = appUserService.signUpUser(
+        String token = appUserServiceImpl.signUpUser(
                 new AppUser(
                         request.getFirstName(),
                         request.getLastName(),
@@ -69,7 +69,7 @@ public class RegistrationService {
         }
 
         confirmationTokenService.setConfirmedAt(token);
-        appUserService.enableAppUser(
+        appUserServiceImpl.enableAppUser(
                 confirmationToken.getAppUser().getEmail());
         return "confirmed";
 
