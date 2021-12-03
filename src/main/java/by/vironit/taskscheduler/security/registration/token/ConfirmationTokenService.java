@@ -16,6 +16,10 @@ public class ConfirmationTokenService {
         confirmationTokenRepository.save(token);
     }
 
+    public void deleteConfirmationTokenByAppUserId(Long id) {
+        confirmationTokenRepository.deleteConfirmationTokenByAppUserId(id);
+    }
+
     public Optional<ConfirmationToken> getToken(String token) {
         return confirmationTokenRepository.findByToken(token);
     }

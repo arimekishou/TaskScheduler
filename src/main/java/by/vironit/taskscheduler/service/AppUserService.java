@@ -10,8 +10,6 @@ public interface AppUserService {
 
     AppUser getById(Long id);
 
-    void update(AppUserDto userDto);
-
     void deleteById(Long id);
 
 }

@@ -1,7 +1,6 @@
 package by.vironit.taskscheduler.service.impl;
 
 import by.vironit.taskscheduler.assembler.AppUserAssembler;
-import by.vironit.taskscheduler.converter.AppUserConverter;
 import by.vironit.taskscheduler.dto.AppUserDto;
 import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.repository.AppUserRepository;
@@ -33,17 +32,17 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
-    private final AppUserConverter appUserConverter;
     private AppUserAssembler assembler;
-
 
     @Override
     public CollectionModel<AppUserDto> findAll(Integer page, Integer size, String sort) {
+
         int pages = page != null ? page : 0;
         int sizes = size != null ? size : 5;
         String sorts = sort != null && !sort.equals("") ? sort : "name";
         Pageable pageable = PageRequest.of(pages, sizes, Sort.by(sorts));
         Page<AppUser> users = appUserRepository.findAll(pageable);
+
         return !users.isEmpty() ? assembler.toCollectionModel(users) : null;
     }
 
@@ -56,12 +55,8 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
     }
 
     @Override
-    public void update(AppUserDto userDto) {
-        appUserRepository.save(appUserConverter.fromUserDtoToUser(userDto));
-    }
-
-    @Override
     public void deleteById(Long id) {
+        confirmationTokenService.deleteConfirmationTokenByAppUserId(id);
         appUserRepository.deleteById(id);
     }
 

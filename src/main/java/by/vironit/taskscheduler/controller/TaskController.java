@@ -12,6 +12,8 @@ import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Log
 @RestController
@@ -35,61 +39,67 @@ public class TaskController {
     public ResponseEntity<?> createTask(@Valid @AuthenticationPrincipal AppUser appUser,
                                         @RequestParam String title,
                                         @RequestParam String description,
-                                        @RequestParam Long taskGroupsId,
+                                        @RequestParam TaskGroups taskGroups,
                                         @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 LocalDateTime startDate,
                                         @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 LocalDateTime endDate, TaskStatus taskStatus) {
 
-        /*Task task = new Task(taskGroups, title, description, startDate, endDate, taskStatus);
-        taskService.saveTask(task);
-        LOGGER.info("Task created");*/
+        TaskDto taskDto = new TaskDto();
+        taskDto.setTitle(title);
+        taskDto.setTaskDescription(description);
+        taskDto.setTaskGroup(taskGroups);
+        taskDto.setStartDate(startDate);
+        taskDto.setEndDate(endDate);
+        taskDto.setTaskStatus(taskStatus);
+        taskServiceImpl.saveTask(taskDto);
+        LOGGER.info("Task created");
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/find/all")
-    public ResponseEntity<List<Task>> findAll() {
-
-        final List<Task> task = taskServiceImpl.findAll();
-
-        return task != null && !task.isEmpty()
-                ? new ResponseEntity<>(task, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/find/all")
+    public CollectionModel<TaskDto> findAll(@RequestParam Integer page,
+                                            @RequestParam Integer size,
+                                            @RequestParam String sort) {
+        LOGGER.info("Handing find all tasks request");
+        return taskServiceImpl.findAll(page, size, sort);
     }
 
     @GetMapping(value = "/find/{id}")
-    public ResponseEntity<TaskDto> getTaskById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<EntityModel<TaskDto>> getTaskById(@PathVariable(name = "id") Long id) {
 
-        Task task = taskServiceImpl.findById(id);
-
-        if (task == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        TaskDto result = TaskDto.fromTask(task);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        TaskDto taskDto = taskServiceImpl.getById(id);
+        return new ResponseEntity<>(EntityModel.of(taskDto,
+                linkTo(methodOn(TaskController.class).getTaskById(id)).withSelfRel()), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @Valid @AuthenticationPrincipal
-            String title, TaskGroups taskGroups, String taskDescription, LocalDateTime startDate,
-                                    LocalDateTime endDate, TaskStatus status) {
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<?> update(@PathVariable(name = "id") Long id,
+                                    @Valid @AuthenticationPrincipal AppUser appUser, TaskDto taskDto, Task task) {
 
         if (taskRepository.existsById(id)) {
 
-            Task task = new Task();
-            task.setId(id);
-            task.setTitle(title);
-            task.setTaskGroup(taskGroups);
-            task.setTaskDescription(taskDescription);
-            task.setStartDate(startDate);
-            task.setEndDate(endDate);
-            task.setTaskStatus(status);
-            taskServiceImpl.saveTask(task);
-            LOGGER.info("Task updated");
-            return new ResponseEntity<>(HttpStatus.OK);
+            LOGGER.info("Handling update task request" + task);
+            if (taskDto.getTitle() != null) {
+                task.setTitle(taskDto.getTitle());
+            }
+            if (taskDto.getTaskDescription() != null) {
+                task.setTaskDescription(taskDto.getTaskDescription());
+            }
+            if (taskDto.getStartDate() != null) {
+                task.setStartDate(taskDto.getStartDate());
+            }
+            if (taskDto.getEndDate() != null) {
+                task.setEndDate(taskDto.getEndDate());
+            }
+            if (taskDto.getTaskStatus() != null) {
+                task.setTaskStatus(taskDto.getTaskStatus());
+            }
 
+            taskRepository.save(task);
+
+            return ResponseEntity.ok().build();
         } else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
 
     }

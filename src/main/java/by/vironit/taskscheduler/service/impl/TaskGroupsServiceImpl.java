@@ -21,29 +21,37 @@ import java.util.List;
 @AllArgsConstructor
 public class TaskGroupsServiceImpl implements TaskGroupsService {
 
+
     private final TaskGroupsConverter taskGroupsConverter;
     private final TaskGroupsRepository taskGroupsRepository;
     private TaskGroupsAssembler assembler;
 
     @Override
     public TaskGroupsDto saveTaskGroup(TaskGroupsDto taskGroupsDto) {
+
         TaskGroups taskGroups = taskGroupsRepository.save(taskGroupsConverter.fromTaskGroupsDtoToTaskGroups(taskGroupsDto));
+
         return taskGroupsConverter.fromTaskGroupsToTaskGroupsDto(taskGroups);
     }
 
     @Override
-    public TaskGroupsDto getById(Long id) {
-        TaskGroups taskGroups = taskGroupsRepository.getById(id);
-        return taskGroupsConverter.fromTaskGroupsToTaskGroupsDto(taskGroups);
+    public TaskGroups getById(Long id) {
+
+        if (taskGroupsRepository.getById(id) != null) {
+            return taskGroupsRepository.getById(id);
+        }
+        return null;
     }
 
     @Override
     public CollectionModel<TaskGroupsDto> findAll(Integer page, Integer size, String sort) {
+
         int pages = page != null ? page : 0;
         int sizes = size != null ? size : 5;
         String sorts = sort != null && !sort.equals("") ? sort : "name";
         Pageable pageable = PageRequest.of(pages, sizes, Sort.by(sorts));
         Page<TaskGroups> taskGroups = taskGroupsRepository.findAll(pageable);
+
         return !taskGroups.isEmpty() ? assembler.toCollectionModel(taskGroups) : null;
     }
 
@@ -59,10 +67,13 @@ public class TaskGroupsServiceImpl implements TaskGroupsService {
 
     @Override
     public TaskGroupsDto findByTitle(String title) {
+
         TaskGroups taskGroups = taskGroupsRepository.findByTitle(title);
+
         if (taskGroups != null) {
             return taskGroupsConverter.fromTaskGroupsToTaskGroupsDto(taskGroups);
         }
+
         return null;
     }
 

@@ -21,7 +21,8 @@ public class TaskGroupsAssembler extends RepresentationModelAssemblerSupport<Tas
     public CollectionModel<TaskGroupsDto> toCollectionModel(Iterable<? extends TaskGroups> entities) {
 
         CollectionModel<TaskGroupsDto> taskGroupsDtoCollectionModel = super.toCollectionModel(entities);
-        taskGroupsDtoCollectionModel.add(linkTo(methodOn(TaskGroupsController.class).findAll()).withSelfRel());
+        taskGroupsDtoCollectionModel.add(linkTo(methodOn(TaskGroupsController.class)
+                .findAll(null, null, null)).withSelfRel());
 
         return super.toCollectionModel(entities);
     }

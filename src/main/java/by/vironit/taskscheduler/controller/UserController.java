@@ -2,6 +2,7 @@ package by.vironit.taskscheduler.controller;
 
 import by.vironit.taskscheduler.converter.AppUserConverter;
 import by.vironit.taskscheduler.dto.AppUserDto;
+import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.repository.AppUserRepository;
 import by.vironit.taskscheduler.service.impl.AppUserServiceImpl;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,12 +33,15 @@ public class UserController {
     private final AppUserServiceImpl userService;
     private final AppUserConverter appUserConverter;
     private final AppUserRepository appUserRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/find/all")
     public CollectionModel<AppUserDto> findAllUser(@RequestParam Integer page,
                                                    @RequestParam Integer size,
                                                    @RequestParam String sort) {
+
         LOGGER.info("Handing find all user request");
+
         return userService.findAll(page, size, sort);
     }
 
@@ -55,24 +60,44 @@ public class UserController {
     @GetMapping("/findByEmail")
     public UserDetails findByEmail(@RequestParam String email) {
         LOGGER.info("Handling find by email request: " + email);
-        return  userService.loadUserByUsername(email);
+        return userService.loadUserByUsername(email);
     }
 
-    @PutMapping("/update") //не работает
-    public ResponseEntity<Void> updateUser(@Valid @AuthenticationPrincipal AppUserDto userDto) {
-        LOGGER.info("Handling update user request" + userDto);
-        userService.update(userDto);
-        return ResponseEntity.ok().build();
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable(name = "id") Long id,
+                                           @Valid @AuthenticationPrincipal AppUser user, AppUserDto userDto) {
+        if (appUserRepository.existsById(id)) {
+            LOGGER.info("Handling update user request" + user);
+            if (userDto.getFirstName() != null) {
+                user.setFirstName(userDto.getFirstName());
+            }
+            if (userDto.getLastName() != null) {
+                user.setLastName(userDto.getLastName());
+            }
+            if (userDto.getEmail() != null) {
+                user.setEmail(userDto.getEmail());
+            }
+            if (userDto.getPassword() != null) {
+                user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+            }
+
+            appUserRepository.save(user);
+
+            return ResponseEntity.ok().build();
+        } else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+
     }
 
-    @DeleteMapping(value = "/delete/{id}") //не работает
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
 
         if (appUserRepository.existsById(id)) {
             userService.deleteById(id);
-            LOGGER.info("Task group deleted");
+            LOGGER.info("User deleted");
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 

@@ -30,7 +30,7 @@ public class Task {
     )
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "task_groups_id", nullable = false)
     @ToString.Exclude
     private TaskGroups taskGroup;

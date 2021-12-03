@@ -11,7 +11,7 @@ public interface TaskGroupsService {
 
     TaskGroupsDto saveTaskGroup(TaskGroupsDto taskGroupsDto);
 
-    TaskGroupsDto getById(Long id);
+    TaskGroups getById(Long id);
 
     TaskGroupsDto findByTitle(String title);
 
