@@ -1,11 +1,11 @@
 package by.vironit.taskscheduler.security.registration;
 
-import by.vironit.taskscheduler.security.registration.token.ConfirmationToken;
-import by.vironit.taskscheduler.security.registration.token.ConfirmationTokenService;
 import by.vironit.taskscheduler.email.EmailSender;
 import by.vironit.taskscheduler.email.EmailValidator;
 import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.enums.AppUserRole;
+import by.vironit.taskscheduler.security.registration.token.ConfirmationToken;
+import by.vironit.taskscheduler.security.registration.token.ConfirmationTokenService;
 import by.vironit.taskscheduler.service.impl.AppUserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

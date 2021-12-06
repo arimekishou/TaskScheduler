@@ -1,7 +1,6 @@
 package by.vironit.taskscheduler.controller;
 
 import by.vironit.taskscheduler.dto.TaskDto;
-import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.Task;
 import by.vironit.taskscheduler.entities.TaskGroups;
 import by.vironit.taskscheduler.entities.enums.TaskStatus;
@@ -36,10 +35,10 @@ public class TaskController {
     private final TaskRepository taskRepository;
 
     @PostMapping(value = "/add")
-    public ResponseEntity<?> createTask(@Valid @AuthenticationPrincipal AppUser appUser,
+    public ResponseEntity<?> createTask(@Valid @AuthenticationPrincipal
+                                        @RequestParam TaskGroups taskGroups,
                                         @RequestParam String title,
                                         @RequestParam String description,
-                                        @RequestParam TaskGroups taskGroups,
                                         @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 LocalDateTime startDate,
                                         @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -75,12 +74,12 @@ public class TaskController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id,
-                                    @Valid @AuthenticationPrincipal AppUser appUser, TaskDto taskDto, Task task) {
+    public ResponseEntity<?> update(@Valid @PathVariable(name = "id") Long id, TaskDto taskDto, Task task) {
 
         if (taskRepository.existsById(id)) {
 
             LOGGER.info("Handling update task request" + task);
+
             if (taskDto.getTitle() != null) {
                 task.setTitle(taskDto.getTitle());
             }
@@ -97,7 +96,7 @@ public class TaskController {
                 task.setTaskStatus(taskDto.getTaskStatus());
             }
 
-            taskRepository.save(task);
+            taskServiceImpl.updateTask(taskDto);
 
             return ResponseEntity.ok().build();
         } else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);

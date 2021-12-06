@@ -4,6 +4,7 @@ import by.vironit.taskscheduler.assembler.AppUserAssembler;
 import by.vironit.taskscheduler.dto.AppUserDto;
 import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.repository.AppUserRepository;
+import by.vironit.taskscheduler.repository.TaskGroupsRepository;
 import by.vironit.taskscheduler.security.registration.token.ConfirmationToken;
 import by.vironit.taskscheduler.security.registration.token.ConfirmationTokenService;
 import by.vironit.taskscheduler.service.AppUserService;
@@ -30,6 +31,9 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
             "user with email %s not found";
 
     private final AppUserRepository appUserRepository;
+    private final TaskGroupsRepository taskGroupsRepository;
+    private final TaskServiceImpl taskService;
+    private final TaskGroupsServiceImpl taskGroupsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
     private AppUserAssembler assembler;
@@ -56,8 +60,14 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
 
     @Override
     public void deleteById(Long id) {
-        confirmationTokenService.deleteConfirmationTokenByAppUserId(id);
+        if (taskGroupsRepository.existsById(id)) {
+            taskService.deleteByTaskGroupId(id);
+            taskGroupsService.deleteById(id);
+            confirmationTokenService.deleteConfirmationTokenByAppUserId(id);
+            appUserRepository.deleteById(id);
+        } else confirmationTokenService.deleteConfirmationTokenByAppUserId(id);
         appUserRepository.deleteById(id);
+
     }
 
     @Override

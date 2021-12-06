@@ -3,6 +3,7 @@ package by.vironit.taskscheduler.assembler;
 import by.vironit.taskscheduler.controller.TaskGroupsController;
 import by.vironit.taskscheduler.dto.TaskGroupsDto;
 import by.vironit.taskscheduler.entities.TaskGroups;
+import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,8 @@ public class TaskGroupsAssembler extends RepresentationModelAssemblerSupport<Tas
     }
 
     @Override
-    public CollectionModel<TaskGroupsDto> toCollectionModel(Iterable<? extends TaskGroups> entities) {
+    @NonNull
+    public CollectionModel<TaskGroupsDto> toCollectionModel(@NonNull Iterable<? extends TaskGroups> entities) {
 
         CollectionModel<TaskGroupsDto> taskGroupsDtoCollectionModel = super.toCollectionModel(entities);
         taskGroupsDtoCollectionModel.add(linkTo(methodOn(TaskGroupsController.class)
@@ -28,7 +30,8 @@ public class TaskGroupsAssembler extends RepresentationModelAssemblerSupport<Tas
     }
 
     @Override
-    public TaskGroupsDto toModel(TaskGroups taskGroups) {
+    @NonNull
+    public TaskGroupsDto toModel(@NonNull TaskGroups taskGroups) {
 
         TaskGroupsDto taskGroupsDto = instantiateModel(taskGroups);
 

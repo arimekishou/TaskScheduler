@@ -2,6 +2,7 @@ package by.vironit.taskscheduler.repository;
 
 import by.vironit.taskscheduler.entities.AppUser;
 import by.vironit.taskscheduler.entities.TaskGroups;
+import lombok.NonNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,7 +20,8 @@ public interface TaskGroupsRepository extends JpaRepository<TaskGroups, Long>, J
 
     TaskGroups getById(Long id);
 
-    Page<TaskGroups> findAll(Pageable pageable);
+    @NonNull
+    Page<TaskGroups> findAll(@NonNull Pageable pageable);
 
     List<TaskGroups> getAllByAppUser(AppUser appUser);
 

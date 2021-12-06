@@ -31,7 +31,7 @@ public class AuthenticationController {
     private final AppUserServiceImpl userService;
 
     @PostMapping("login")
-    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDto requestDto) {
 
         try {
             String email = requestDto.getEmail();

@@ -76,7 +76,6 @@ public class TaskGroupsController {
             LOGGER.info("Handling update task group request" + taskGroupsDto);
 
             if (taskGroupsDto.getTitle() != null) {
-                appUser.getId();
                 taskGroups.setAppUser(appUser);
                 taskGroups.setTitle(taskGroupsDto.getTitle());
             }
@@ -89,7 +88,7 @@ public class TaskGroupsController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> delete(@Valid @AuthenticationPrincipal AppUser appUser, @PathVariable(name = "id") Long id) {
+    public ResponseEntity<?> delete(@Valid @PathVariable(name = "id") Long id) {
 
         if (taskGroupsRepository.existsById(id)) {
             taskGroupsServiceImpl.deleteById(id);

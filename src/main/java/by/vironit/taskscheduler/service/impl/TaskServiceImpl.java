@@ -68,6 +68,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void deleteByTaskGroupId(Long id) {
+        taskRepository.deleteTaskByTaskGroupId(id);
+    }
+
+    @Override
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
     }
@@ -76,4 +81,5 @@ public class TaskServiceImpl implements TaskService {
     public void updateTask(TaskDto taskDto) {
         taskRepository.save(taskConverter.fromTaskDtoToTask(taskDto));
     }
+
 }

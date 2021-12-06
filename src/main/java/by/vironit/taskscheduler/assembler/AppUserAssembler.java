@@ -4,6 +4,7 @@ package by.vironit.taskscheduler.assembler;
 import by.vironit.taskscheduler.controller.UserController;
 import by.vironit.taskscheduler.dto.AppUserDto;
 import by.vironit.taskscheduler.entities.AppUser;
+import lombok.NonNull;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,8 @@ public class AppUserAssembler extends RepresentationModelAssemblerSupport<AppUse
     }
 
     @Override
-    public CollectionModel<AppUserDto> toCollectionModel(Iterable<? extends AppUser> entities) {
+    @NonNull
+    public CollectionModel<AppUserDto> toCollectionModel(@NonNull Iterable<? extends AppUser> entities) {
 
         CollectionModel<AppUserDto> userModels = super.toCollectionModel(entities);
         userModels.add(linkTo(methodOn(UserController.class).findAllUser(null, null, null)).withSelfRel());
@@ -28,7 +30,8 @@ public class AppUserAssembler extends RepresentationModelAssemblerSupport<AppUse
     }
 
     @Override
-    public AppUserDto toModel(AppUser user) {
+    @NonNull
+    public AppUserDto toModel(@NonNull AppUser user) {
 
         AppUserDto userDto = instantiateModel(user);
 

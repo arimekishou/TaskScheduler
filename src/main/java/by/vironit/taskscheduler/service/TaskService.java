@@ -1,7 +1,6 @@
 package by.vironit.taskscheduler.service;
 
 import by.vironit.taskscheduler.dto.TaskDto;
-import by.vironit.taskscheduler.dto.TaskGroupsDto;
 import by.vironit.taskscheduler.entities.Task;
 import by.vironit.taskscheduler.entities.TaskGroups;
 import by.vironit.taskscheduler.entities.enums.TaskStatus;
@@ -22,6 +21,8 @@ public interface TaskService {
     List<Task> getAllByTaskStatus(TaskStatus taskStatus);
 
     List<Task> getAllByTaskGroup(TaskGroups taskGroups);
+
+    void deleteByTaskGroupId(Long id);
 
     void deleteById(Long id);
 

@@ -45,6 +45,7 @@ class TaskGroupsServiceImplTest {
 
     @Test
     void saveTaskGroup() {
+
         long id = 1;
         String title = "hello";
         AppUser appUser = new AppUser();
@@ -62,6 +63,7 @@ class TaskGroupsServiceImplTest {
 
     @Test
     void getById() {
+
         long id = 1;
         TaskGroups taskGroups = new TaskGroups();
         taskGroups.setId(id);
@@ -77,6 +79,7 @@ class TaskGroupsServiceImplTest {
 
     @Test
     void findAll() {
+
         TaskGroups taskGroups = new TaskGroups();
         TaskGroupsDto taskGroupsDto = new TaskGroupsDto();
         Mockito.when(taskGroupsRepository.findAll()).thenReturn(Collections.singletonList(taskGroups));
@@ -85,6 +88,7 @@ class TaskGroupsServiceImplTest {
 
     @Test
     void getAllByAppUser() {
+
         AppUser appUser = new AppUser();
         TaskGroups taskGroups = new TaskGroups();
         TaskGroupsDto taskGroupsDto = new TaskGroupsDto();
@@ -94,6 +98,7 @@ class TaskGroupsServiceImplTest {
 
     @Test
     void updateTaskGroup() {
+
         TaskGroups taskGroups = new TaskGroups();
         TaskGroupsDto taskGroupsDto = new TaskGroupsDto();
         Mockito.when(taskGroupsRepository.findAll()).thenReturn(Collections.singletonList(taskGroups));
@@ -104,6 +109,7 @@ class TaskGroupsServiceImplTest {
 
     @Test
     void findByTitlePositive() {
+
         String title = "hello";
         TaskGroups taskGroups = new TaskGroups();
         taskGroups.setTitle(title);
@@ -119,6 +125,7 @@ class TaskGroupsServiceImplTest {
 
     @Test
     public void findByTitleNegative() {
+
         String title = "hello";
         TaskGroups taskGroups = new TaskGroups();
         taskGroups.setTitle(title);
@@ -130,15 +137,16 @@ class TaskGroupsServiceImplTest {
         TaskGroupsDto actual = new TaskGroupsDto();
         actual.setTitle("hi");
         assertNotEquals(expected, actual);
-
     }
 
 
     @Test
     void deleteById() {
+
         long id = 1;
         TaskGroups taskGroups = new TaskGroups();
         taskGroups.setId(id);
         taskGroupsService.deleteById(id);
     }
+
 }
